@@ -163,15 +163,15 @@ Node Navigator::findShortestNode(vector<Node> nodes, bool frontierNodes) {
 
 vector<Node> Navigator::findUnexploredSurroundingPaths(Vector2 pos) {
 	//Find the surrounding paths, that are not flagged as explored
-	long tPaths;
-	long tPathsInsideA = 0;
-	long tPathsInsideB = 0;
-	long tPathsInsideC = 0;
-	long tPathsInsideD = 0;
-	long tPathsOutsideA = 0;
-	long tPathsOutsideB = 0;
-	long tPathsOutsideC = 0;
-	long tPathsOutsideD = 0;
+	long atPaths;
+	long atPathsInsideA = 0;
+	long atPathsInsideB = 0;
+	long atPathsInsideC = 0;
+	long atPathsInsideD = 0;
+	long atPathsOutsideA = 0;
+	long atPathsOutsideB = 0;
+	long atPathsOutsideC = 0;
+	long atPathsOutsideD = 0;
 
 	auto tPathsB = std::chrono::high_resolution_clock::now();
 	vector<Node> steps;
@@ -180,24 +180,24 @@ vector<Node> Navigator::findUnexploredSurroundingPaths(Vector2 pos) {
 		&& !flags[(int)(pos.y)][(int)(pos.x - 1)]//Flag must be false
 		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x - 1), (int)pos.y, 3)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
-		tPathsOutsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
+		atPathsOutsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
 		steps.push_back(Node((int)(pos.x - 1), (int)pos.y, world->getMap()->getTravelWeightAt((int)(pos.x - 1), (int)pos.y))); //Add node with position and step weight
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
-		tPathsInsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
+		atPathsInsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 	}
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
 	if (pos.x + 1 < flags[(int)(pos.y)].size() //Index x cant be above the size of the y array at pos
 		&& !flags[(int)(pos.y)][(int)(pos.x + 1)] //Flag must be false
 		/*&& world->getMap()->getBorderDataAt(pos, (int)(pos.x + 1), (int)pos.y, 1)*/) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
-		tPathsOutsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
+		atPathsOutsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
 		steps.push_back(Node((int)(pos.x + 1), (int)pos.y, world->getMap()->getTravelWeightAt((int)(pos.x + 1), (int)pos.y))); //Add node with position and step weight
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
-		tPathsInsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
+		atPathsInsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 
 	}
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
@@ -205,27 +205,28 @@ vector<Node> Navigator::findUnexploredSurroundingPaths(Vector2 pos) {
 		&& !flags[(int)(pos.y - 1)][(int)(pos.x)] //Flag must be false
 		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x), (int)pos.y - 1, 0)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
-		tPathsOutsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
+		atPathsOutsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
 		steps.push_back(Node((int)pos.x, (int)(pos.y - 1), world->getMap()->getTravelWeightAt((int)pos.x, (int)(pos.y - 1)))); //Add node with position and step weight
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
-		tPathsInsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
+		atPathsInsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 	}
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
 	if (pos.y + 1 < flags.size() && pos.x < flags[(int)(pos.y + 1)].size() //Pos y must be below the amount of y's and index x cant be above the size of the y array at pos
 		&& !flags[(int)(pos.y + 1)][(int)(pos.x)] //Flag must be false
 		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x), (int)pos.y + 1, 2)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
-		tPathsOutsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
-
+		atPathsOutsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
+		Node n = Node((int)pos.x, (int)(pos.y + 1), 0);
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
-		steps.push_back(Node((int)pos.x, (int)(pos.y + 1), world->getMap()->getTravelWeightAt((int)pos.x, (int)(pos.y + 1)))); //Add node with position and step weight
+		n.size = world->getMap()->getTravelWeightAt((int)pos.x, (int)(pos.y + 1));
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
-		tPathsInsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
+		steps.push_back(n); //Add node with position and step weight
+		atPathsInsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 	}
 	auto tPathsE = std::chrono::high_resolution_clock::now();
-	tPaths = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsE - tPathsB).count();
+	atPaths = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsE - tPathsB).count();
 	return steps;
 }
 Node Navigator::findShortestSurroundingPaths(Node n) {

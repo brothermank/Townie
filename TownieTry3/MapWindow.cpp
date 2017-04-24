@@ -276,7 +276,7 @@ bool MapWindow::ReceiveClick(Vector2 pos, Uint32 mask, bool buttonDown) {
 			pos = screnPosToMapPos(pos);
 			for (int i = 0; i < paintSize * 2 - 1; i++) {
 				for (int j = 0; j < paintSize * 2 - 1; j++) {
-					map.setTileAt((int)pos.x - paintSize + 1 + i, (int)pos.y - paintSize + 1 + j, paintingKey);
+					map.editorSetTileAt((int)pos.x - paintSize + 1 + i, (int)pos.y - paintSize + 1 + j, paintingKey);
 				}
 			}
 

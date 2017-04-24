@@ -94,3 +94,14 @@ TownieTry3.VC.db
 # Dont ignore these files
 !TownieTry3/Libraries/*/*/*/*
 !Debug/*.dll
+*.pdb
+TownieTry3/Debug/TownieTry3.log
+TownieTry3.VC.db
+*.pdb
+Debug/TownieTry3.ilk
+Debug/Debug.txt
+*.suo
+*.pdb
+*.pdb
+*.lastbuildstate
+*.suo

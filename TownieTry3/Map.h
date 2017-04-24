@@ -54,19 +54,8 @@ public:
 	Map(vector<Tile> textures);
 	Map(vector<Tile> textures, string name);
 	void loadTiles(vector<Tile> textures);
-	int getValueAt(int x, int y);
-	Tile* getTileAt(int x, int y);
-	void setTileAt(int x, int y, int value);
-	Structure* getStructureAt(int x, int y, bool br = false);
-	int setStructureAt(int x, int y, Structure* value);
-	void removeStructureAt(int x, int y);
-	double getTravelWeightAt(int x, int y);
-	double getTravelWeightAt(Vector2 pos);
-	bool getBorderDataAt(Vector2 from, Vector2 to, int borderIndex);
-	bool getBorderDataAt(int xfrom, int yfrom, int xto, int yto, int borderIndex);
-	bool getBorderDataAt(Vector2 from, int xto, int yto, int borderIndex);
-	bool isSafe(int x, int y);
-
+	void editorSetTileAt(int x, int y, int value);
+	
 	void undoLastChange();
 	void nextAction();
 	void save();
@@ -77,9 +66,94 @@ public:
 	std::vector<Tile> tileTypes;
 	string name = "";
 
+
+	//Inline functions
+
+	inline Tile* Map::getTileAt(int x, int y) {
+		if (x < 0 || x >(int)tiles[y % tiles.size()].size() - 1 || y < 0 || y >(int)tiles.size() - 1) return &tileTypes[0];
+		else return &tileTypes[tiles[y][x]];
+
+	}
+	inline int Map::getValueAt(int x, int y) {
+		if (x < 0 || x >(int)tiles[y % tiles.size()].size() - 1 || y < 0 || y >(int)tiles.size() - 1) return 1;
+		else return tiles[y][x];
+	}
+
+	inline Structure* Map::getStructureAt(int x, int y) {
+		if (y >= 0 && y < (int)structures.size() && x >= 0 && x < (int)structures[y % structures.size()].size()) {
+			return structures[x][y];
+		} else {
+			return NULL;
+		}
+	}
+	inline int Map::setStructureAt(int x, int y, Structure* value) {
+		if (x < 0 || x >(int)structures[y % structures.size()].size() - 1 || y < 0 || y >(int)structures.size() - 1) return -1;
+		structures[x][y] = value;
+		return 0;
+	}
+	inline void Map::removeStructureAt(int x, int y) {
+		if (x < 0 || x >(int)structures[y % structures.size()].size() - 1 || y < 0 || y >(int)structures.size() - 1) {
+			return;
+		}
+		structures[x][y] = NULL;
+
+	}
+
+	inline double Map::getTravelWeightAt(int x, int y) {
+		return getTileAt(x, y)->getTravelWeight();
+	}
+	inline double Map::getTravelWeightAt(Vector2 pos) {
+		return getTileAt((int)pos.x, (int)pos.y)->getTravelWeight();
+	}
+	inline bool Map::getBorderDataAt(Vector2 from, Vector2 to, int borderIndex) {
+		btemp0 = getTileAt((int)from.x, (int)from.y)->borderEntrance[borderIndex % 4]
+			&& getTileAt((int)to.x, (int)to.y)->borderEntrance[borderIndex + 2 % 4];
+		if ((stemp0 = getStructureAt((int)from.x, (int)from.y)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex % 4];
+		}
+		if ((stemp0 = getStructureAt((int)to.x, (int)to.y)) != NULL) {
+			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
+		}
+
+		return btemp0;
+	}
+	inline bool Map::getBorderDataAt(int xfrom, int yfrom, int xto, int yto, int borderIndex) {
+		btemp0 = getTileAt(xfrom, yfrom)->borderEntrance[borderIndex % 4]
+			&& getTileAt(xto, yto)->borderEntrance[borderIndex + 2 % 4];
+		if ((stemp0 = getStructureAt(xfrom, yfrom)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex % 4];
+		}
+		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
+			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
+		}
+
+		return btemp0;
+	}
+	inline bool Map::getBorderDataAt(Vector2 from, int xto, int yto, int borderIndex) {
+		btemp0 = getTileAt((int)from.x, (int)from.y)->borderEntrance[borderIndex % 4]
+			&& getTileAt(xto, yto)->borderEntrance[(borderIndex + 2) % 4];
+		if ((stemp0 = getStructureAt((int)from.x, (int)from.y)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex % 4];
+		}
+		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
+			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
+		}
+
+		return btemp0;
+	}
+	inline bool Map::isSafe(int x, int y) {
+		if ((stemp1 = getStructureAt(x, y)) != 0) {
+			return stemp1->isSafe;
+		} else return false;
+	}
+
+
 private:
 	stack<Action> actionStack;
 
+
+	bool btemp0, btemp1;
+	Structure *stemp0, *stemp1;
 };
 
 Map LoadMap(string mapName);
