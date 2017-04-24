@@ -78,5 +78,19 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Visual Studio
+# =========================
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+
+
 # Dont ignore these files
 !TownieTry3/Libraries/*/*/*/*
+.vs/TownieTry3/v14/.suo
+*.db
+*.suo
+TownieTry3.VC.db
