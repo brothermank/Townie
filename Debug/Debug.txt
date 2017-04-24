@@ -1,0 +1,4 @@
+Created rectangle with pos 0,0  size 5,5
+Created monster zone with pos:0,0  size: 5,5
+Rectangle in initialization 0,0 - is within space 5,5 rectangle at 07A6AD00
+Rectangle in main loop 0,0 - is within space 5,5 rectangle at 07A6AD00
