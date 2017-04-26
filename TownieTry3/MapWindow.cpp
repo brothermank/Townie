@@ -13,9 +13,9 @@ MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer) : Window(wind, 
 	shared_ptr<GTextField> temp1(new GTextField(rend));
 	shared_ptr<GTextField> temp2(new GTextField(rend));
 	shared_ptr<GTextField> temp3(new GTextField(rend));
-	temp1->pos = Vector2(0, 80);
-	temp2->pos = Vector2(0, 160);
-	temp3->pos = Vector2(0, 240);
+	temp1->pos = Vector2D(0, 80);
+	temp2->pos = Vector2D(0, 160);
+	temp3->pos = Vector2D(0, 240);
 	saveText = temp;
 	heroMoney = temp1;
 	monsterHealth = temp2;
@@ -35,9 +35,9 @@ MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer, Map m) :Window(
 	shared_ptr<GTextField> temp1(new GTextField(rend));
 	shared_ptr<GTextField> temp2(new GTextField(rend));
 	shared_ptr<GTextField> temp3(new GTextField(rend));
-	temp1->pos = Vector2(0, 80);
-	temp2->pos = Vector2(0, 160);
-	temp3->pos = Vector2(0, 240);
+	temp1->pos = Vector2D(0, 80);
+	temp2->pos = Vector2D(0, 160);
+	temp3->pos = Vector2D(0, 240);
 	saveText = temp;
 	heroMoney = temp1;
 	monsterHealth = temp2;
@@ -59,10 +59,10 @@ void MapWindow::DrawMap() {
 	int xh;
 	int yl;
 	int yh;
-	xl = (int)(screnPosToMapPos(Vector2(-tilew, scrh)).x - 1);
-	xh = (int)(screnPosToMapPos(Vector2(scrw, -tileh)).x + 1);
-	yl = (int)(screnPosToMapPos(Vector2(-tilew, -tileh)).y - 1);
-	yh = (int)(screnPosToMapPos(Vector2(scrw, scrh)).y + 1);
+	xl = (int)(screnPosToMapPos(Vector2D(-tilew, scrh)).x - 1);
+	xh = (int)(screnPosToMapPos(Vector2D(scrw, -tileh)).x + 1);
+	yl = (int)(screnPosToMapPos(Vector2D(-tilew, -tileh)).y - 1);
+	yh = (int)(screnPosToMapPos(Vector2D(scrw, scrh)).y + 1);
 
 	double offx = fmod(wpos.x, 1.0f);
 	double offy = fmod(wpos.y, 1.0f);
@@ -75,7 +75,7 @@ void MapWindow::DrawMap() {
 	for (int y = yh; y > yl; y--) {
 		for (int x = xl; x < xh; x++) {
 
-			Vector2 scrpos = mapPosToScreenPos(Vector2(x, y));
+			Vector2D scrpos = mapPosToScreenPos(Vector2D(x, y));
 
 			if (scrpos.x >= -tilew && scrpos.x <= scrw && scrpos.y >= -tileh && scrpos.y <= scrh) {
 				t = map.getTileAt(x, y);
@@ -91,16 +91,16 @@ void MapWindow::saveMap() {
 	map.save();
 }
 
-Vector2 MapWindow::screnPosToMapPos(Vector2 pos) {
+Vector2D MapWindow::screnPosToMapPos(Vector2D pos) {
 
-	Vector2 rpos;
+	Vector2D rpos;
 	rpos.x = ((pos.x - tilew * 0.25f) / tilew - (pos.y - tileh * 0.25f) / tileh) + 0.5f + wpos.x;
 	rpos.y = (pos.x - tilew * 0.25f) / tilew + (pos.y - tileh * 0.25f) / tileh + wpos.y;
 	return rpos;
 }
 
-Vector2 MapWindow::mapPosToScreenPos(Vector2 pos) {
-	Vector2 posr;
+Vector2D MapWindow::mapPosToScreenPos(Vector2D pos) {
+	Vector2D posr;
 	pos.x -= wpos.x;
 	pos.y -= wpos.y;
 
@@ -126,10 +126,10 @@ void MapWindow::DrawEntities(double dTime) {
 	}*/
 
 	size_t iEntity = 0, iStruct = 0;
-	Vector2 scrposEntity;
-	Vector2 scrposStruct;
+	Vector2D scrposEntity;
+	Vector2D scrposStruct;
 	while (iEntity < entities.size() && iStruct < structures.size()) {
-		if ((scrposEntity = mapPosToScreenPos(entities[iEntity]->pos + Vector2(0, 1))).y < (scrposStruct = mapPosToScreenPos(structures[iStruct]->pos + Vector2(0, 1))).y) {
+		if ((scrposEntity = mapPosToScreenPos(entities[iEntity]->pos + Vector2D(0, 1))).y < (scrposStruct = mapPosToScreenPos(structures[iStruct]->pos + Vector2D(0, 1))).y) {
 			entities[iEntity]->render(this, dTime);
 			iEntity++;
 		}
@@ -137,7 +137,7 @@ void MapWindow::DrawEntities(double dTime) {
 			if (scrposStruct.x >= -tilew && scrposStruct.x <= scrw && scrposStruct.y >= -tileh && scrposStruct.y <= scrh) {
 				double scale = structures[iStruct]->texture.mWidth * 1.0f / structures[iStruct]->texture.mHeight;
 				int width = (int)(structures[iStruct]->imgSize * zoom * scale);
-				structures[iStruct]->texture.render(scrposStruct, structures[iStruct]->imgSize * zoom, rend, NULL, NULL, Vector2(0.5, 0.5));
+				structures[iStruct]->texture.render(scrposStruct, structures[iStruct]->imgSize * zoom, rend, NULL, NULL, Vector2D(0.5, 0.5));
 			}
 			iStruct++;
 		}
@@ -147,11 +147,11 @@ void MapWindow::DrawEntities(double dTime) {
 		iEntity++;
 	}
 	while (iStruct < structures.size()) {
-		scrposStruct = mapPosToScreenPos(structures[iStruct]->pos + Vector2(0, 1));
+		scrposStruct = mapPosToScreenPos(structures[iStruct]->pos + Vector2D(0, 1));
 		if (scrposStruct.x >= -tilew && scrposStruct.x <= scrw && scrposStruct.y >= -tileh && scrposStruct.y <= scrh) {
 			double scale = structures[iStruct]->texture.mWidth * 1.0f / structures[iStruct]->texture.mHeight;
 			int width = (int)(structures[iStruct]->imgSize * zoom * scale);
-			structures[iStruct]->texture.render(scrposStruct, structures[iStruct]->imgSize * zoom, rend, NULL, NULL, Vector2(0.5, 0.5));
+			structures[iStruct]->texture.render(scrposStruct, structures[iStruct]->imgSize * zoom, rend, NULL, NULL, Vector2D(0.5, 0.5));
 		}
 		iStruct++;
 	}
@@ -191,7 +191,7 @@ shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, int x, int
 		return NULL;
 	}
 	shared_ptr<Monster> e = make_shared<Monster>(templ->copyEntity());
-	e->setPos(Vector2(x, y));
+	e->setPos(Vector2D(x, y));
 	registerEntity(e);
 	return e;
 }
@@ -210,7 +210,7 @@ shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, Rectangle 
 		if (i > 1000) return NULL;
 		i++;
 	}
-	e->setPos(Vector2(x, y));
+	e->setPos(Vector2D(x, y));
 	registerEntity(e);
 	return e;
 }
@@ -247,13 +247,12 @@ bool MapWindow::entityAt(int x, int y) {
 }
 
 void MapWindow::update(double dTime) {
-	UpdateZones(dTime);
+	/*UpdateZones(dTime);*/
 	UpdateEntities(dTime);
 	DrawMap();
 	DrawEntities(dTime);
-	DrawGui();
-	updateScreen();
 
+	//Update gui
 	vector<shared_ptr<Hero>> heroes;
 	if ((heroes = getHeroes()).size() != 0) {
 		heroMoney->setText("Hero money: " + strh::toString(heroes[0]->getMoney()));
@@ -266,9 +265,12 @@ void MapWindow::update(double dTime) {
 			monsterHealth->setText(" ");
 		}
 	}
+
+	DrawGui();
+	updateScreen();
 }
 
-bool MapWindow::ReceiveClick(Vector2 pos, Uint32 mask, bool buttonDown) {
+bool MapWindow::ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown) {
 	bool guiOverlayed = Window::ReceiveClick(pos, mask, buttonDown);
 	if (!guiOverlayed) {
 		if (mask & SDL_BUTTON(SDL_BUTTON_LEFT) && !buttonDown) {

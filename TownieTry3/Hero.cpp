@@ -4,7 +4,7 @@
 
 
 void Hero::render(MapWindow* world, double dTime) {
-	Vector2 scrpos = world->mapPosToScreenPos(pos + Vector2(0, 1));
+	Vector2D scrpos = world->mapPosToScreenPos(pos + Vector2D(0, 1));
 	bool isInsideBuilding = false;
 	for (size_t i = 0; i < world->structures.size(); i++) {
 		if (pos.x < world->structures[i]->pos.x + world->structures[i]->size && pos.x > world->structures[i]->pos.x - world->structures[i]->size
@@ -17,9 +17,9 @@ void Hero::render(MapWindow* world, double dTime) {
 	if (!isInsideBuilding) {
 		double scale = texture.mWidth * 1.0f / texture.mHeight;
 		//int width = (int)(imgSize * world->zoom * scale);
-		texture.render(scrpos, imgSize * world->zoom, world->getRend(), NULL, NULL, Vector2(0.5, 1));
+		texture.render(scrpos, imgSize * world->zoom, world->getRend(), NULL, NULL, Vector2D(0.5, 1));
 		if (weapon != NULL) {
-			Vector2 weaponAnchor = scrpos + Vector2(imgSize * scale * 0.38, imgSize * -0.22) * world->zoom;
+			Vector2D weaponAnchor = scrpos + Vector2D(imgSize * scale * 0.38, imgSize * -0.22) * world->zoom;
 			weapon->Render(world, weaponAnchor, world->getRend(), isWithinRange, dTime);
 		}
 	}
@@ -100,7 +100,7 @@ double Hero::getOutfitValue() {
 
 
 void Hero::update(double dTime) {
-	timer += dTime;
+	/*timer += dTime;
 	isWithinRange = false;
 	if (!hasT) {
 		TargetNearestMonster(2);
@@ -119,7 +119,7 @@ void Hero::update(double dTime) {
 				shopAt(targetStore);
 			}
 		}
-	}
+	}*/
 	FollowPath();
 }
 

@@ -36,7 +36,7 @@ void Window::updateScreen() {
 	SDL_RenderPresent(rend);
 }
 
-bool Window::ReceiveClick(Vector2 pos, Uint32 mask, bool buttonDown) {
+bool Window::ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown) {
 	bool buttonClick = false;
 	bool textClick = false;
 	if (mask & SDL_BUTTON(SDL_BUTTON_LEFT) && !buttonDown) {

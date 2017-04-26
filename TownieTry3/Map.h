@@ -54,7 +54,7 @@ public:
 	Map(vector<Tile> textures);
 	Map(vector<Tile> textures, string name);
 	void loadTiles(vector<Tile> textures);
-	void editorSetTileAt(int x, int y, int value);
+	void editorSetTileAt(size_t x, size_t y, size_t value);
 	
 	void undoLastChange();
 	void nextAction();
@@ -69,71 +69,57 @@ public:
 
 	//Inline functions
 
-	inline Tile* Map::getTileAt(int x, int y) {
-		if (x < 0 || x >(int)tiles[y % tiles.size()].size() - 1 || y < 0 || y >(int)tiles.size() - 1) return &tileTypes[0];
-		else return &tileTypes[tiles[y][x]];
+	inline Tile* Map::getTileAt(size_t x, size_t y) {
+		if (y < tiles.size() - 1 && x < tiles[y].size() - 1) return &tileTypes[tiles[y][x]];
+		else return &tileTypes[0];
 
 	}
-	inline int Map::getValueAt(int x, int y) {
-		if (x < 0 || x >(int)tiles[y % tiles.size()].size() - 1 || y < 0 || y >(int)tiles.size() - 1) return 1;
-		else return tiles[y][x];
+	inline int Map::getValueAt(size_t x, size_t y) {
+		if (y < tiles.size() - 1 && x < tiles[y].size() - 1) return tiles[y][x];
+		else return 1;
 	}
 
-	inline Structure* Map::getStructureAt(int x, int y) {
-		if (y >= 0 && y < (int)structures.size() && x >= 0 && x < (int)structures[y % structures.size()].size()) {
+	inline Structure* Map::getStructureAt(size_t x, size_t y) {
+		if (y < structures.size() &&  x < structures[y % structures.size()].size()) {
 			return structures[x][y];
 		} else {
 			return NULL;
 		}
 	}
-	inline int Map::setStructureAt(int x, int y, Structure* value) {
-		if (x < 0 || x >(int)structures[y % structures.size()].size() - 1 || y < 0 || y >(int)structures.size() - 1) return -1;
-		structures[x][y] = value;
-		return 0;
+	inline bool Map::setStructureAt(size_t x, size_t y, Structure* value) {
+		if (y < structures.size() && x < structures[y % structures.size()].size()) structures[x][y] = value;
+		else return false;
+		return true;
 	}
-	inline void Map::removeStructureAt(int x, int y) {
-		if (x < 0 || x >(int)structures[y % structures.size()].size() - 1 || y < 0 || y >(int)structures.size() - 1) {
-			return;
+	inline void Map::removeStructureAt(size_t x, size_t y) {
+		if (y < structures.size() && x < structures[y % structures.size()].size()) {
+			structures[x][y] = NULL;
 		}
-		structures[x][y] = NULL;
-
 	}
 
-	inline double Map::getTravelWeightAt(int x, int y) {
+	inline double Map::getTravelWeightAt(size_t x, size_t y) {
 		return getTileAt(x, y)->getTravelWeight();
 	}
-	inline double Map::getTravelWeightAt(Vector2 pos) {
-		return getTileAt((int)pos.x, (int)pos.y)->getTravelWeight();
+	inline double Map::getTravelWeightAt(Vector2ST pos) {
+		return getTileAt(pos.x, pos.y)->getTravelWeight();
 	}
-	inline bool Map::getBorderDataAt(Vector2 from, Vector2 to, int borderIndex) {
-		btemp0 = getTileAt((int)from.x, (int)from.y)->borderEntrance[borderIndex % 4]
-			&& getTileAt((int)to.x, (int)to.y)->borderEntrance[borderIndex + 2 % 4];
-		if ((stemp0 = getStructureAt((int)from.x, (int)from.y)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex % 4];
+	inline bool Map::getBorderDataAt(Vector2ST from, Vector2ST to, size_t borderIndex) {
+		btemp0 = getTileAt(from.x, from.y)->borderEntrance[borderIndex]
+			&& getTileAt(to.x, to.y)->borderEntrance[(borderIndex + 2) % 4];
+		if ((stemp0 = getStructureAt(from.x, from.y)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex];
 		}
-		if ((stemp0 = getStructureAt((int)to.x, (int)to.y)) != NULL) {
+		if ((stemp0 = getStructureAt(to.x, to.y)) != NULL) {
 			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
 		}
 
 		return btemp0;
 	}
-	inline bool Map::getBorderDataAt(int xfrom, int yfrom, int xto, int yto, int borderIndex) {
-		btemp0 = getTileAt(xfrom, yfrom)->borderEntrance[borderIndex % 4]
-			&& getTileAt(xto, yto)->borderEntrance[borderIndex + 2 % 4];
-		if ((stemp0 = getStructureAt(xfrom, yfrom)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex % 4];
-		}
-		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
-			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
-		}
-
-		return btemp0;
-	}
-	inline bool Map::getBorderDataAt(Vector2 from, int xto, int yto, int borderIndex) {
-		btemp0 = getTileAt((int)from.x, (int)from.y)->borderEntrance[borderIndex % 4]
+	inline bool Map::getBorderDataAt(size_t xfrom, size_t yfrom, size_t xto, size_t yto, size_t borderIndex) {
+		btemp0 = getTileAt(xfrom, yfrom)->borderEntrance[borderIndex]
 			&& getTileAt(xto, yto)->borderEntrance[(borderIndex + 2) % 4];
-		if ((stemp0 = getStructureAt((int)from.x, (int)from.y)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex % 4];
+		if ((stemp0 = getStructureAt(xfrom, yfrom)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex];
 		}
 		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
 			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
@@ -141,7 +127,19 @@ public:
 
 		return btemp0;
 	}
-	inline bool Map::isSafe(int x, int y) {
+	inline bool Map::getBorderDataAt(Vector2ST from, size_t xto, size_t yto, size_t borderIndex) {
+		btemp0 = getTileAt(from.x, from.y)->borderEntrance[borderIndex]
+			&& getTileAt(xto, yto)->borderEntrance[(borderIndex + 2) % 4];
+		if ((stemp0 = getStructureAt(from.x, from.y)) != NULL) {
+			btemp0 &= stemp0->borderData[borderIndex];
+		}
+		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
+			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
+		}
+
+		return btemp0;
+	}
+	inline bool Map::isSafe(size_t x, size_t y) {
 		if ((stemp1 = getStructureAt(x, y)) != 0) {
 			return stemp1->isSafe;
 		} else return false;

@@ -2,7 +2,7 @@
 #include <math.h>
 #include "MapWindow.h"
 
-void Weapon::Render(MapWindow* world, Vector2 gAnchor, SDL_Renderer* rend, bool animating, double dTime) {
+void Weapon::Render(MapWindow* world, Vector2D gAnchor, SDL_Renderer* rend, bool animating, double dTime) {
 	isTriggering = false;
 	int width = texture.mWidth;
 	int height = texture.mHeight;
@@ -22,9 +22,9 @@ void Weapon::Render(MapWindow* world, Vector2 gAnchor, SDL_Renderer* rend, bool 
 		double fraction = a.time / (a.points[a.step].time * atkTime);
 		double rot = rotLast + (rotNext - rotLast) * fraction;
 		if (!((rot = fmod(rot, 360)) < 360 && rot > -360)) rot = 0;
-		Vector2 scaledAnchor = Vector2(pos.x - 0.5, (pos.y - 0.5) / scale);
-		Vector2 rotatedAnchor = (scaledAnchor).getRotatedDeg(rot);
-		Vector2 anchor = (Vector2(rotatedAnchor.x, rotatedAnchor.y * scale) + Vector2(0.5, 0.5));
+		Vector2D scaledAnchor = Vector2D(pos.x - 0.5, (pos.y - 0.5) / scale);
+		Vector2D rotatedAnchor = (scaledAnchor).getRotatedDeg(rot);
+		Vector2D anchor = (Vector2D(rotatedAnchor.x, rotatedAnchor.y * scale) + Vector2D(0.5, 0.5));
 
 		texture.render(gAnchor, imgSize * world->zoom, rend, rot, NULL, anchor);
 

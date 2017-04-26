@@ -52,20 +52,20 @@ Game::Game() {
 
 	currentWindow->getHeroes()[0]->changeMoney(100);
 
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[0], 0, Vector2(1560, 20), Vector2(150, 75))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[1], 1, Vector2(1730, 20), Vector2(150, 75))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[2], 2, Vector2(1560, 115), Vector2(150, 75))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[3], 3, Vector2(1730, 115), Vector2(150, 75))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[4], 4, Vector2(1560, 200), Vector2(150, 75))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectBrushSize>(new GButtonSelectBrushSize(currentWindow, gRenderer, textures[4], false, Vector2(1560, 400), Vector2(150, 150))));
-	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectBrushSize>(new GButtonSelectBrushSize(currentWindow, gRenderer, textures[4], true, Vector2(1730, 400), Vector2(150, 150))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[0], 0, Vector2I(1560, 20), Vector2I(150, 75))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[1], 1, Vector2I(1730, 20), Vector2I(150, 75))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[2], 2, Vector2I(1560, 115), Vector2I(150, 75))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[3], 3, Vector2I(1730, 115), Vector2I(150, 75))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[4], 4, Vector2I(1560, 200), Vector2I(150, 75))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectBrushSize>(new GButtonSelectBrushSize(currentWindow, gRenderer, textures[4], false, Vector2I(1560, 400), Vector2I(150, 150))));
+	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectBrushSize>(new GButtonSelectBrushSize(currentWindow, gRenderer, textures[4], true, Vector2I(1730, 400), Vector2I(150, 150))));
 
 
 	Debugger::print("Rectangle in initialization " + strh::toString(currentWindow->zones[0]->area.x) + "," + strh::toString(currentWindow->zones[0]->area.y)
 		+ " - is within space " + strh::toString(currentWindow->zones[0]->area.w) + "," + strh::toString(currentWindow->zones[0]->area.h) + " rectangle at " + strh::toString(&(currentWindow->zones[0]->area.x)) + "\n");
 
 	currentWindow->zoom = 0.7;
-	currentWindow->wpos = Vector2(2, -4);
+	currentWindow->wpos = Vector2D(2, -4);
 
 }
 
@@ -159,7 +159,7 @@ void Game::mainLoop() {
 		x = &a1;
 		y = &a2;
 		Uint32 bmap = SDL_GetMouseState(x, y);
-		currentWindow->ReceiveClick(Vector2(*x, *y), bmap, heldClick);
+		currentWindow->ReceiveClick(Vector2D(*x, *y), bmap, heldClick);
 		if (bmap & SDL_BUTTON(SDL_BUTTON_LEFT) && !heldClick) {
 			Debugger::print("Click\n");
 			heldClick = true;
@@ -207,17 +207,17 @@ void Game::loadAllTiles() {
 	tiles.push_back(Tile(&textures[0], 0.5f, temp4));
 }
 void Game::loadAllEntities() {
-	entityTemplates.push_back(Entity(gRenderer, "Character", "Viking", &*currentWindow, 1, Vector2(0, 0), 70, Hero_t));
-	entityTemplates.push_back(Entity(gRenderer, "Character", "Tentacle2", &*currentWindow, 1, Vector2(0, 0), 70, Monster_t));
+	entityTemplates.push_back(Entity(gRenderer, "Character", "Viking", &*currentWindow, 1, Vector2D(0, 0), 70, Hero_t));
+	entityTemplates.push_back(Entity(gRenderer, "Character", "Tentacle2", &*currentWindow, 1, Vector2D(0, 0), 70, Monster_t));
 
 }
 void Game::loadAllStructures() {
 	bool temp1[4] = { false, false, false, true };
-	structTemplates.push_back(Structure(gRenderer, "Structure", "HouseNew", Store_t, Vector2(0, 0), 0.2f, 300, temp1, true));
+	structTemplates.push_back(Structure(gRenderer, "Structure", "HouseNew", Store_t, Vector2D(0, 0), 0.2f, 300, temp1, true));
 }
 void Game::loadAllItems() {
-	itemTemplates.push_back(Item(gRenderer, "Item", "Sword", Item::Undefined, Vector2(0.5, 1), 50));
-	itemTemplates.push_back(Item(gRenderer, "Item", "Blank", Item::Undefined, Vector2(0.5, 1), 50));
+	itemTemplates.push_back(Item(gRenderer, "Item", "Sword", Item::Undefined, Vector2D(0.5, 1), 50));
+	itemTemplates.push_back(Item(gRenderer, "Item", "Blank", Item::Undefined, Vector2D(0.5, 1), 50));
 }
 
 void Game::saveLevel() {

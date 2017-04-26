@@ -56,9 +56,8 @@ void Map::loadTiles(vector<Tile> tiles) {
 	tileTypes = tiles;
 }
 
-void Map::editorSetTileAt(int x, int y, int value) {
-	if (x < 0 || x >(int)tiles[y % tiles.size()].size() - 1 || y < 0 || y >(int)tiles.size() - 1) return;
-	if (tiles[y][x] != value) {
+void Map::editorSetTileAt(size_t x, size_t y, size_t value) {
+	if (y < tiles.size() - 1 && x < tiles[y].size() - 1 && tiles[y][x] != value) {
 		actionStack.top().x.push_back(x);
 		actionStack.top().y.push_back(y);
 		actionStack.top().prevValue.push_back(tiles[y][x]);

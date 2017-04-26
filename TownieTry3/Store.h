@@ -13,8 +13,8 @@ public:
 		type = Store_t;
 		isSafe = s.isSafe;
 	}
-	Store(LTexture text, Vector2 position = Vector2(0, 0), bool isSafe = true) : Structure(text, Store_t, position, isSafe) {}
-	Store(SDL_Renderer * rend, string textureType, string name, Vector2 position = Vector2(0, 0), bool isSafe = true) : Structure(rend, textureType, name, Store_t, position, isSafe) {}
+	Store(LTexture text, Vector2D position = Vector2D(0, 0), bool isSafe = true) : Structure(text, Store_t, position, isSafe) {}
+	Store(SDL_Renderer * rend, string textureType, string name, Vector2D position = Vector2D(0, 0), bool isSafe = true) : Structure(rend, textureType, name, Store_t, position, isSafe) {}
 
 
 	bool SellItem(int itemIndex, Entity* customer);
@@ -24,7 +24,7 @@ public:
 	vector<TradeGoods> itemsForSale;
 	vector<shared_ptr<Item>> items;
 
-	Vector2 entrancePoint;
+	Vector2D entrancePoint;
 
 
 private:

@@ -40,7 +40,7 @@ public:
 	double atkTime = 1;
 
 
-	void Render(MapWindow* world, Vector2 gAnchor, SDL_Renderer* rend, bool animating = false, double dTime = 0);
+	void Render(MapWindow* world, Vector2D gAnchor, SDL_Renderer* rend, bool animating = false, double dTime = 0);
 
 	double baseDmg;
 

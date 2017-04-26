@@ -8,7 +8,7 @@
 using namespace std;
 
 Path::Path() {}
-int Path::pathLength() {
+double Path::pathLength() {
 	return nodes[nodes.size() - 1].size;
 }
 
@@ -20,21 +20,18 @@ Navigator::Navigator(MapWindow * mapWindow) {
 	world = mapWindow;
 }
 
-Path Navigator::findPath(Vector2 startpos, Vector2 destinationPos) {
+
+Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 	//initialization
 	//Define variables
-	clock_t t = clock();
-	clock_t dt = 0;
-	long cps = CLOCKS_PER_SEC;
-	vector<Node> nodes;//all the frontier nodes with more paths to explore
-	int x = (int)(startpos.x + 0.5), y = (int)(startpos.y + 0.5);
+	vector<Node*> nodes;//all the frontier nodes with more paths to explore
+	size_t x = (size_t)(startpos.x + 0.5), y = (size_t)(startpos.y + 0.5);
 	double lastx = startpos.x - 0.5, lasty = startpos.y - 0.5;
+	NextFrontier nf = NextFrontier();
+	Node * refCur;
+	Node * refNext;
 
-	//If already at goal, ezpz
-	if (x == (int)(destinationPos.x) && y == (int)(destinationPos.y)) {
-		nodes.push_back(Node((int)destinationPos.x, (int)destinationPos.y, 0));
-		return Path(nodes);
-	}
+	
 	//more variables
 	vector<vector<Node>> referenceNodes; //For storing where the node was reached from
 	vector<vector<bool>> temp;
@@ -49,18 +46,27 @@ Path Navigator::findPath(Vector2 startpos, Vector2 destinationPos) {
 			referenceNodes[y].push_back(Node(x, y, 0));
 		}
 	}
+	//If already at goal, ezpz
+	if (x == destinationPos.x && y == destinationPos.y) {
+		nodes.push_back(&referenceNodes[destinationPos.y][destinationPos.x]);
+		return Path(nodes);
+	}
+
 	//Flag start position as explored, dont start path from here.
 	flags[y][x] = true;
 
 	//Debugger::print("initialized node checkpoints:" + toString(nodes[0].checkpoints.size()) + "\n");
-	nodes = findUnexploredSurroundingPaths(Vector2(x, y)); //Start out with the nodes around the start position;
+	findUnexploredSurroundingPaths(Vector2I(x, y), &nf); //Start out with the nodes around the start position;
+	for (int i = 0; i < 4; i++) {
+		if (nf.inFrontier[i]) nodes.push_back(&referenceNodes[nf.nodes[i].pos.y][nf.nodes[i].pos.x]);
+	}
+
 	for (size_t i = 0; i < nodes.size(); i++) {//Flag initial nodes
-		flags[(int)(nodes[i].pos.y)][(int)(nodes[i].pos.x)] = true;
-		if (nodes[i].pos.x == (int)destinationPos.x && nodes[i].pos.y == (int)destinationPos.y) { //If one is the destination, return as vector
-			vector<Node> n;
+		flags[nodes[i]->pos.y][nodes[i]->pos.x] = true;
+		if (nodes[i]->pos.x ==destinationPos.x && nodes[i]->pos.y == destinationPos.y) { //If one is the destination, return start and that as vector
+			vector<Node*> n;
+			n.push_back(&referenceNodes[(int)startpos.y][(int)startpos.x]); //Start pos
 			n.push_back(nodes[i]);
-			//Make sure he doesnt stray
-			n.insert(n.begin(), Node(x, y, 0));
 			return Path(n);
 		}
 	}
@@ -69,62 +75,59 @@ Path Navigator::findPath(Vector2 startpos, Vector2 destinationPos) {
 	long aashortestNodeTime = 0;
 	long aaunexploredPathTime = 0;
 	int counter = 0;
-
-	while (nodes.size() > 0 && counter < 10000) { //while there are still more frontiers to explore
+	
+	while (nodes.size() > 0 && counter < 100) { //while there are still more frontiers to explore
 		auto loopTimerBegin = std::chrono::high_resolution_clock::now();
 		auto shortestNodeTimerBegin = std::chrono::high_resolution_clock::now();
-		Node current = findShortestNode(nodes, true); //Select the shortest frontier
+		current = findShortestNode(nodes); //Select the shortest frontier
 		auto shortestNodeTimerEnd = std::chrono::high_resolution_clock::now();
 		//Debugger::print("Current node has size: " + toString(current.size) + " and position: " + toString(current.pos.x) + "," + toString(current.pos.y) + " and length " + toString(current.checkpoints.size()) + "\n");
 		auto unexploredPathBegin = std::chrono::high_resolution_clock::now();
-		vector<Node> next = findUnexploredSurroundingPaths(current.pos); //Find best direction to advance
+		findUnexploredSurroundingPaths(current->pos, &nf); //Find best directions to advance
+		
 		auto unexploredPathEnd = std::chrono::high_resolution_clock::now();
-		for (size_t i = 0; i < next.size(); i++) {
-			//Manage the reference node
-			Node * refCur = &referenceNodes[(size_t)current.pos.y][(size_t)current.pos.x];
-			Node * refNext = &referenceNodes[(size_t)next[i].pos.y][(size_t)next[i].pos.x];
-			//Set where it was explored from
-			refNext->previousNode = refCur;
-			//Set total size
-			refNext->size = world->getMap()->getTravelWeightAt((int)(refNext->pos.x), (int)(refNext->pos.y)) + refCur->size;
-			//Create node on frontier
-			nodes.push_back(refNext->clone());
-			//Flag the position as explored
-			flags[(int)(next[i].pos.y)][(int)(next[i].pos.x)] = true;
+		for (size_t i = 0; i < 4; i++) {
+			if(nf.inFrontier[i]){
+				//Manage the reference node
+				refCur = &referenceNodes[current->pos.y][current->pos.x];
+				refNext = &referenceNodes[nf.nodes[i].pos.y][nf.nodes[i].pos.x];
+				//Set where it was explored from
+				refNext->previousNode = refCur;
+				//Set total size
+				refNext->size = world->getMap()->getTravelWeightAt(refNext->pos.x, refNext->pos.y) + refCur->size;
+				//Create node on frontier
+				nodes.push_back(refNext);
+				//Flag the position as explored
+				flags[nodes[i]->pos.y][nodes[i]->pos.x] = true;
 
-			//Debugger::print("Returned node has size: " + toString(next.size) + " and position: " + toString(next.pos.x) + "," + toString(next.pos.y) + " and length " + toString(next.checkpoints.size()) + "\n");
-			//Debugger::print("Checkpoints are: ");
-			//for (int i = 0; i < next.checkpoints.size(); i++) {
-			//	Debugger::print(toString(next.checkpoints[i].pos.x) + "," + toString(next.checkpoints[i].pos.y) + " ");
-			//}
-			//Debugger::print("\n"); 
+				//Debugger::print("Returned node has size: " + toString(next.size) + " and position: " + toString(next.pos.x) + "," + toString(next.pos.y) + " and length " + toString(next.checkpoints.size()) + "\n");
+				//Debugger::print("Checkpoints are: ");
+				//for (int i = 0; i < next.checkpoints.size(); i++) {
+				//	Debugger::print(toString(next.checkpoints[i].pos.x) + "," + toString(next.checkpoints[i].pos.y) + " ");
+				//}
+				//Debugger::print("\n"); 
 
-			//If the explored node is the goal
-			if (next[i].pos.x == (int)destinationPos.x && next[i].pos.y == (int)destinationPos.y) {
-				//create a vector containing the explored path
-				int i = 1;
-				vector<Node> path;
-				path.insert(path.begin(), *refNext);
-				do {
-					refNext = refNext->previousNode; //If the path before that node does not have a path, stop
-					path.insert(path.begin(), *refNext); //Insert current node
-					i++;
-				} while (refNext->previousNode != NULL);
-				//Make sure he doesnt stray
-				path.insert(path.begin(), Node(x, y, 0));
-
-
-				//return the path
-				return Path(path);
+				//If the explored node is the goal
+				if (nodes[i]->pos.x == destinationPos.x && nodes[i]->pos.y == destinationPos.y) {
+					//create and return a vector containing the explored path
+					int i = 1;
+					vector<Node> path;
+					path.insert(path.begin(), *refNext);
+					do {
+						refNext = refNext->previousNode; //If the path before that node does not have a path, stop
+						path.insert(path.begin(), *refNext); //Insert current node
+						i++;
+					} while (refNext->previousNode != NULL);
+					//Make sure he doesnt stray
+					path.insert(path.begin(), Node(x, y, 0));
+					//return the path
+					return Path(path);
+				}
 			}
-			//Create reference node
 		}
 		//Node now explored, erase
-		nodes.erase(nodes.begin() + cIndex);
-		//Go to new frontier
-
-		//counter++;
-
+		nodes.erase(nodes.begin() + itemp0);
+		counter++;
 		auto loopTimerEnd = std::chrono::high_resolution_clock::now();
 		aaloopTime = std::chrono::duration_cast<std::chrono::nanoseconds>(loopTimerEnd - loopTimerBegin).count();
 		aaunexploredPathTime = std::chrono::duration_cast<std::chrono::nanoseconds>(unexploredPathEnd - unexploredPathBegin).count();
@@ -133,35 +136,28 @@ Path Navigator::findPath(Vector2 startpos, Vector2 destinationPos) {
 
 	//If there is no path
 	vector<Node> start;
-	start.push_back(Node(startpos.x, startpos.y, 0));
+	start.push_back(Node((size_t)startpos.x, (size_t)startpos.y, 0));
 	return Path(start);
-
+	
 }
 
-Node Navigator::findShortestNode(vector<Node> nodes, bool frontierNodes) {
+Node* Navigator::findShortestNode(vector<Node*> nodes) {
 	//Look through all nodes and return the smallest. If it is the frontier node list, also note cIndex, to mark it for erasion if empty frontier
 	//(When searching for 'current')
 	//Compare to first
-	Node smallestN = nodes[0];
-	if (frontierNodes) cIndex = 0;
-	long tPerNode;
-	int nodeSize();
-	tPerNode = nodes.size();
-	for (size_t i = 1; i < nodes.size(); i++) {//for each other element in frontier
-		auto tPerNodeB = std::chrono::high_resolution_clock::now();
-		if (nodes[i].size < smallestN.size) { //If size is smaller, set as prefered
-			smallestN = nodes[i];
-			if (frontierNodes) cIndex = i;
-		}
-		auto tPerNodeE = std::chrono::high_resolution_clock::now();
-		tPerNode = std::chrono::duration_cast<std::chrono::nanoseconds>(tPerNodeE - tPerNodeB).count();
-		int q = 0;
-	}
-	return smallestN;
+	itemp0 = 0;
+	dtemp0 = nodes[0]->size;
 
+	for (size_t i = 1; i < nodes.size(); i++) {//for each other element in frontier
+		if (nodes[i]->size < dtemp0) { //If size is smaller, set as prefered
+			dtemp0 = nodes[i]->size;
+			itemp0 = i;
+		}
+	}
+	return nodes[itemp0];
 }
 
-vector<Node> Navigator::findUnexploredSurroundingPaths(Vector2 pos) {
+void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) {
 	//Find the surrounding paths, that are not flagged as explored
 	long atPaths;
 	long atPathsInsideA = 0;
@@ -176,65 +172,74 @@ vector<Node> Navigator::findUnexploredSurroundingPaths(Vector2 pos) {
 	auto tPathsB = std::chrono::high_resolution_clock::now();
 	vector<Node> steps;
 	auto tPathsOutsideAB = std::chrono::high_resolution_clock::now();
-	if (pos.x - 1 >= 0 //index x cant be below zero
-		&& !flags[(int)(pos.y)][(int)(pos.x - 1)]//Flag must be false
-		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x - 1), (int)pos.y, 3)) { //Border must be crossable
+	if (pos.x >= 1u //index x cant be below zero
+		&& !flags[pos.y][pos.x - 1]//Flag must be false
+		&& world->getMap()->getBorderDataAt(pos, pos.x - 1, pos.y, 3)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
 		atPathsOutsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
-		steps.push_back(Node((int)(pos.x - 1), (int)pos.y, world->getMap()->getTravelWeightAt((int)(pos.x - 1), (int)pos.y))); //Add node with position and step weight
+		nf->nodes[0].pos.x = pos.x - 1;
+		nf->nodes[0].pos.y = pos.y;
+		nf->nodes[0].size = world->getMap()->getTravelWeightAt(pos.x - 1, pos.y);
+		nf->inFrontier[0] = true;
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
 		atPathsInsideA = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 	}
+	else nf->inFrontier[0] = false;
+
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
-	if (pos.x + 1 < flags[(int)(pos.y)].size() //Index x cant be above the size of the y array at pos
-		&& !flags[(int)(pos.y)][(int)(pos.x + 1)] //Flag must be false
+	if (pos.x + 1u < flags[pos.y].size() //Index x cant be above the size of the y array at pos
+		&& !flags[pos.y][pos.x + 1] //Flag must be false
 		/*&& world->getMap()->getBorderDataAt(pos, (int)(pos.x + 1), (int)pos.y, 1)*/) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
 		atPathsOutsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
-		steps.push_back(Node((int)(pos.x + 1), (int)pos.y, world->getMap()->getTravelWeightAt((int)(pos.x + 1), (int)pos.y))); //Add node with position and step weight
+		nf->nodes[1].pos.x = pos.x + 1;
+		nf->nodes[1].pos.y = pos.y;
+		nf->nodes[1].size = world->getMap()->getTravelWeightAt(pos.x + 1, pos.y);
+		nf->inFrontier[1] = true; 
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
 		atPathsInsideB = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
-
 	}
+	else nf->inFrontier[1] = false;
+
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
-	if (pos.y - 1 >= 0 && pos.x < flags[(int)(pos.y - 1)].size() //Index y cant be above 0, and index cant be above the size of the y array at pos
-		&& !flags[(int)(pos.y - 1)][(int)(pos.x)] //Flag must be false
-		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x), (int)pos.y - 1, 0)) { //Border must be crossable
+	if (pos.y >= 1 //Index y cant be above 0, and index cant be above the size of the y array at pos
+		&& !flags[pos.y - 1][pos.x] //Flag must be false
+		&& world->getMap()->getBorderDataAt(pos, pos.x, pos.y - 1, 0)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
 		atPathsOutsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
 
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
-		steps.push_back(Node((int)pos.x, (int)(pos.y - 1), world->getMap()->getTravelWeightAt((int)pos.x, (int)(pos.y - 1)))); //Add node with position and step weight
+		nf->nodes[2].pos.x = pos.x;
+		nf->nodes[2].pos.y = pos.y - 1;
+		nf->nodes[2].size = world->getMap()->getTravelWeightAt(pos.x, pos.y - 1);
+		nf->inFrontier[2] = true; 
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
 		atPathsInsideC = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
 	}
+	else nf->inFrontier[2] = false;
+
 	tPathsOutsideAB = std::chrono::high_resolution_clock::now();
-	if (pos.y + 1 < flags.size() && pos.x < flags[(int)(pos.y + 1)].size() //Pos y must be below the amount of y's and index x cant be above the size of the y array at pos
-		&& !flags[(int)(pos.y + 1)][(int)(pos.x)] //Flag must be false
-		&& world->getMap()->getBorderDataAt(pos, (int)(pos.x), (int)pos.y + 1, 2)) { //Border must be crossable
+	if (pos.y + 1u < flags.size() //Pos y must be below the amount of y's and index x cant be above the size of the y array at pos
+		&& !flags[pos.y + 1][pos.x] //Flag must be false
+		&& world->getMap()->getBorderDataAt(pos, pos.x, pos.y + 1, 2)) { //Border must be crossable
 		auto tPathsOutsideAE = std::chrono::high_resolution_clock::now();
 		atPathsOutsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsOutsideAE - tPathsOutsideAB).count();
-		Node n = Node((int)pos.x, (int)(pos.y + 1), 0);
+
 		auto tPathsInsideAB = std::chrono::high_resolution_clock::now();
-		n.size = world->getMap()->getTravelWeightAt((int)pos.x, (int)(pos.y + 1));
+		nf->nodes[3].pos.x = pos.x;
+		nf->nodes[3].pos.y = pos.y + 1;
+		nf->nodes[3].size = world->getMap()->getTravelWeightAt(pos.x, pos.y + 1);
+		nf->inFrontier[3] = true;
 		auto tPathsInsideAE = std::chrono::high_resolution_clock::now();
-		steps.push_back(n); //Add node with position and step weight
 		atPathsInsideD = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsInsideAE - tPathsInsideAB).count();
+		int i = 0;
 	}
+	else nf->inFrontier[3] = false;
+
 	auto tPathsE = std::chrono::high_resolution_clock::now();
 	atPaths = std::chrono::duration_cast<std::chrono::nanoseconds>(tPathsE - tPathsB).count();
-	return steps;
-}
-Node Navigator::findShortestSurroundingPaths(Node n) {
-	//find unexplored surrounding paths
-	vector<Node> surroundingPaths = findUnexploredSurroundingPaths(n.pos);
-
-	//Find the shortest of them
-	Node shortest = findShortestNode(surroundingPaths);
-	//Debugger::print("Shortest path has size: " + toString((int)(shortest.size)) + "\n");
-	return shortest;
 }

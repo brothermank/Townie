@@ -4,13 +4,13 @@
 #include "Debugger.h"
 
 
-Entity::Entity(LTexture text, MapWindow * map, double speed, Vector2 pos, double imgSize, EntityT t) : WObject(text, pos, imgSize) {
+Entity::Entity(LTexture text, MapWindow * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(text, pos, imgSize) {
 	n = Navigator(map);
 	this->speed = speed;
 	this->pos = pos;
 	type = t;
 }
-Entity::Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed, Vector2 pos, double imgSize, EntityT t) : WObject(rend, textureType, name, pos, imgSize) {
+Entity::Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(rend, textureType, name, pos, imgSize) {
 	n = Navigator(map);
 	this->speed = speed;
 	this->pos = pos;
@@ -35,7 +35,7 @@ void Entity::update(double dTime) {
 	FollowPath();
 }
 void Entity::render(MapWindow* world, double dTime) {
-	Vector2 scrpos = world->mapPosToScreenPos(pos + Vector2(0, 1));
+	Vector2D scrpos = world->mapPosToScreenPos(pos + Vector2D(0, 1));
 	bool isInsideBuilding = false;
 	for (size_t i = 0; i < world->structures.size(); i++) {
 		if (pos.x < world->structures[i]->pos.x + world->structures[i]->size && pos.x > world->structures[i]->pos.x - world->structures[i]->size
@@ -48,14 +48,14 @@ void Entity::render(MapWindow* world, double dTime) {
 	if (!isInsideBuilding) {
 		double scale = texture.mWidth * 1.0f / texture.mHeight;
 		int width = (int)(imgSize * world->zoom * scale);
-		texture.render(scrpos, imgSize * world->zoom, world->getRend(), NULL, NULL, Vector2(0.5, 1));
+		texture.render(scrpos, imgSize * world->zoom, world->getRend(), NULL, NULL, Vector2D(0.5, 1));
 	}
 }
 
 void Entity::FollowPath() {
 	//move along path
 	if (path.size() > 0) {
-		Vector2 direction = path[0].pos - pos;
+		Vector2D direction = Vector2D(path[0].pos.x - pos.x, path[0].pos.y - pos.y);
 		double distance = direction.magnitude();
 		direction.normalize();
 		if (dTime * speed > distance) {

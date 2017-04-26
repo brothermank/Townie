@@ -18,18 +18,18 @@ class MapWindow : public Window {
 public:
 	MapWindow(SDL_Window * window, SDL_Renderer * renderer);
 	MapWindow(SDL_Window * window, SDL_Renderer * renderer, Map m);
-	Vector2 wpos;
+	Vector2D wpos;
 	double zoom;
 	void DrawMap();
 	void saveMap();
 	void DrawEntities(double dTime);
 	void UpdateEntities(double dTime);
 	void UpdateZones(double time);
-	Vector2 screnPosToMapPos(Vector2 pos);
-	Vector2 mapPosToScreenPos(Vector2 pos);
+	Vector2D screnPosToMapPos(Vector2D pos);
+	Vector2D mapPosToScreenPos(Vector2D pos);
 	Map * getMap();
 	void update(double dTime);
-	bool ReceiveClick(Vector2 pos, Uint32 mask, bool buttonDown);
+	bool ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown);
 	void ReceiveHotkeyInput(SDL_Event e);
 	void changePaintSize(bool increment);
 

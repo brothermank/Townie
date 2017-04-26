@@ -15,9 +15,9 @@ enum ActionT { Idle, Attack, EnterBuilding };
 
 class Entity : public WObject {
 public:
-	Entity() :speed(1), path(), type(Undefined), WObject(Vector2(0, 0), EntityHeight) {}
-	Entity(LTexture text, MapWindow * map, double speed = 1, Vector2 pos = Vector2(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
-	Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed = 1, Vector2 pos = Vector2(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
+	Entity() :speed(1), path(), type(Undefined), WObject(Vector2D(0, 0), EntityHeight) {}
+	Entity(LTexture text, MapWindow * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
+	Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
 
 	virtual void update(double dTime);
 	Entity copyEntity();

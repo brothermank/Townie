@@ -12,12 +12,12 @@ using namespace std;
 
 struct Node {
 
-	Vector2 pos;
+	Vector2ST pos;
 	double size;
 	Node * previousNode;
 
 	Node() :pos(0, 0), size(0), previousNode(NULL) {}
-	Node(double xinit, double yinit, double sizeinit) :pos(xinit, yinit), size(sizeinit), previousNode(NULL) {}
+	Node(size_t xinit, size_t yinit, double sizeinit) :pos(xinit, yinit), size(sizeinit), previousNode(NULL) {}
 
 	Node clone() {
 		Node temp;
@@ -32,9 +32,20 @@ class Path {
 public:
 	vector<Node> nodes;
 	Path();
-	Path(vector<Node> n) :nodes(n) {};
+	Path(vector<Node> n) {
+		nodes.reserve(n.size());
+		for (size_t i = 0; i < n.size(); i++) {
+			nodes.push_back(n[i]);
+		}
+	};
+	Path(vector<Node*> n) {
+		nodes.reserve(n.size());
+		for (size_t i = 0; i < n.size(); i++) {
+			nodes.push_back(*n[i]);
+		}
+	};
 	size_t size() { return nodes.size(); }
-	int pathLength();
+	double pathLength();
 
 	void push_back(Node node) { nodes.push_back(node); }
 
@@ -51,19 +62,34 @@ public:
 
 };
 
+struct NextFrontier {
+	Node nodes[4];
+	bool inFrontier[4];
+
+	NextFrontier() {
+		for (size_t i = 0; i < 4; i++) {
+			nodes[i] = Node(0, 0, 0);
+			inFrontier[i] = false;
+		}
+	}
+};
+
 class Navigator {
 public:
 	Navigator();
 	Navigator(MapWindow * mapWindow);
-	Path findPath(Vector2 startpos, Vector2 destinationPos);
+	Path findPath(Vector2D startpos, Vector2ST destinationPos);
 	MapWindow * world;
 
 private:
-	vector<Node> findUnexploredSurroundingPaths(Vector2 pos);
-	Node findShortestNode(vector<Node> nodes, bool frontierNodes = false);
-	Node findShortestSurroundingPaths(Node n);
+	void findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf);
+	Node* findShortestNode(vector<Node*> nodes);
 	vector<vector<bool>> flags;
 	int cIndex;
 	bool deadEnd;
+
+	int itemp0;
+	double dtemp0;
+	Node * current;
 };
 

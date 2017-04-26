@@ -40,8 +40,8 @@ public:
 	//void setAlpha(Uint8 alpha);
 
 	////Renders texture at given point
-	void render(Vector2 scrpos, double scale, SDL_Renderer* renderer, double angle = 0.0, SDL_Rect* clip = NULL, Vector2 center = Vector2(0, 0), SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void render(Vector2 scrpos, Vector2 size, SDL_Renderer* renderer, double angle = 0.0, SDL_Rect* clip = NULL, Vector2 center = Vector2(0, 0), SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render(Vector2D scrpos, double scale, SDL_Renderer* renderer, double angle = 0.0, SDL_Rect* clip = NULL, Vector2D center = Vector2D(0, 0), SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render(Vector2D scrpos, Vector2D size, SDL_Renderer* renderer, double angle = 0.0, SDL_Rect* clip = NULL, Vector2D center = Vector2D(0, 0), SDL_RendererFlip flip = SDL_FLIP_NONE);
 	////Gets image dimensions
 	//int getWidth();
 	//int getHeight();

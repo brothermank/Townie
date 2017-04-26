@@ -75,7 +75,7 @@ bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor
 }
 
 
-void LTexture::render(Vector2 scrpos, double scale, SDL_Renderer* renderer, double angle, SDL_Rect* clip, Vector2 center, SDL_RendererFlip flip) {
+void LTexture::render(Vector2D scrpos, double scale, SDL_Renderer* renderer, double angle, SDL_Rect* clip, Vector2D center, SDL_RendererFlip flip) {
 	SDL_Point * c = NULL;
 	//Set rendering space and render to screen
 	double proportion = mWidth * 1.0f / mHeight;
@@ -90,7 +90,7 @@ void LTexture::render(Vector2 scrpos, double scale, SDL_Renderer* renderer, doub
 	//Render to screen
 	SDL_RenderCopyEx(renderer, mTexture, clip, &renderQuad, angle, c, flip);
 }
-void LTexture::render(Vector2 scrpos, Vector2 size, SDL_Renderer* renderer, double angle, SDL_Rect* clip, Vector2 center, SDL_RendererFlip flip) {
+void LTexture::render(Vector2D scrpos, Vector2D size, SDL_Renderer* renderer, double angle, SDL_Rect* clip, Vector2D center, SDL_RendererFlip flip) {
 	SDL_Point * c = NULL;
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { (int)(scrpos.x - size.x * center.x), (int)(scrpos.y - size.y * center.y), (int)(size.x), (int)size.y };
