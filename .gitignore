@@ -105,3 +105,5 @@ Debug/Debug.txt
 *.pdb
 *.lastbuildstate
 *.suo
+TownieTry3.VC.VC.opendb
+*.db

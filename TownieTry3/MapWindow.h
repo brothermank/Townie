@@ -51,6 +51,8 @@ public:
 	vector<shared_ptr<Zone>> zones;
 	int paintingKey = 1;
 
+	shared_ptr<GTextField> frameRate;
+
 private:
 	Map map;
 	bool heldLeft = false;

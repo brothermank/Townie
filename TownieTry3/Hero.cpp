@@ -100,7 +100,7 @@ double Hero::getOutfitValue() {
 
 
 void Hero::update(double dTime) {
-	/*timer += dTime;
+	timer += dTime;
 	isWithinRange = false;
 	if (!hasT) {
 		TargetNearestMonster(2);
@@ -119,7 +119,7 @@ void Hero::update(double dTime) {
 				shopAt(targetStore);
 			}
 		}
-	}*/
+	}
 	FollowPath();
 }
 

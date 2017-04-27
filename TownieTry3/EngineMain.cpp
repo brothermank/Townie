@@ -1,4 +1,4 @@
-#define frameCap 90
+#define frameCap 100000
 
 #include "EngineMain.h"
 #include <iostream>
@@ -21,16 +21,14 @@ Game::Game() {
 	initGame();
 	shared_ptr<MapWindow> temp(new MapWindow(gWindow, gRenderer));
 	currentWindow = temp;
-	loadAllTiles();
-	Map map = LoadMap("Placeholder");
-	map.loadTiles(tiles);
-	loadLevel(map);
 	loadAllEntities();
 	loadAllStructures();
 	loadAllItems();
+	loadAllTiles();
+	currentWindow = make_shared<MapWindow>(MapWindow(gWindow, gRenderer, Map(tiles, "Placeholder", "Placeholder")));
 	//currentWindow->registerEntity(Hero(entityTemplates[0].copy()));
 
-	MonsterZone mz = MonsterZone(0, 0, 5, 5, currentWindow, 3);
+	MonsterZone mz = MonsterZone(0, 0, 5, 5, currentWindow.get(), 3);
 	mz.addMonsterTemplate(Monster(entityTemplates[1], 10, 3, 1, 0.2));
 	currentWindow->registerZone(make_shared<MonsterZone>(mz));
 
@@ -112,14 +110,6 @@ void Game::closeGame() {
 
 }
 
-void Game::loadLevel(Map m) {
-	MapWindow w = MapWindow(gWindow, gRenderer, m);
-	*currentWindow = w;
-}
-void Game::loadLevel() {
-	loadLevel(Map(tiles));
-}
-
 void Game::mainLoop() {
 	Debugger::print("Rectangle in main loop " + strh::toString(currentWindow->zones[0]->area.x) + "," + strh::toString(currentWindow->zones[0]->area.y)
 		+ " - is within space " + strh::toString(currentWindow->zones[0]->area.w) + "," + strh::toString(currentWindow->zones[0]->area.h) + " rectangle at " + strh::toString(&(currentWindow->zones[0]->area.x)) + "\n");
@@ -129,7 +119,9 @@ void Game::mainLoop() {
 
 	timeLast = SDL_GetTicks();
 	double timer1 = 0;
+	double time1sec = 0;
 	int frames = 0;
+	int frameRateCount = 0;
 
 	bool heldClick = false;
 
@@ -179,7 +171,15 @@ void Game::mainLoop() {
 		}
 		timeLast += (Uint32)(dTime * 1000);
 		timer1 += dTime;
+		time1sec += dTime;
 		frames++;
+		frameRateCount++;
+		if (time1sec > 1.0) {
+			currentWindow->frameRate->setText("Frame Rate: " + strh::toString(frameRateCount));
+			time1sec -= 1;
+			frameRateCount = 0;
+		}
+		
 
 	}
 

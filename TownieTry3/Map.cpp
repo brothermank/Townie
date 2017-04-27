@@ -6,7 +6,7 @@
 #include <string>
 #include "Debugger.h"
 
-Map::Map() {
+Map::Map() : sempty() {
 	for (int y = 0; y < sy; y++) {
 		vector<int> temp;
 		vector<Structure*> temp1;
@@ -14,42 +14,19 @@ Map::Map() {
 		structures.push_back(temp1);
 		for (int x = 0; x < sx; x++) {
 			tiles[y].push_back(0);
-			structures[y].push_back(0);
+			structures[y].push_back(&sempty);
 		}
 	}
+	sizex = sx; sizey = sy;
 	name = "Random" + strh::toString(rand());
 	nextAction();
 }
-
-Map::Map(vector<Tile> tilePalette) {
-	for (int y = 0; y < sy; y++) {
-		vector<int> temp;
-		tiles.push_back(temp);
-		vector<Structure*> temp1;
-		structures.push_back(temp1);
-		for (int x = 0; x < sx; x++) {
-			tiles[y].push_back(0);
-			structures[y].push_back(0);
-		}
-	}
+Map::Map(vector<Tile> tilePalette, string mapName, string loadName) : sempty() {
+	load(loadName);
+	sizex = sx; sizey = sy;
 	tileTypes = tilePalette;
 	nextAction();
-	name = "Random" + strh::toString(rand());
-}
-Map::Map(vector<Tile> tilePalette, string Name) {
-	for (int y = 0; y < sy; y++) {
-		vector<int> temp;
-		tiles.push_back(temp);
-		vector<Structure*> temp1;
-		structures.push_back(temp1);
-		for (int x = 0; x < sx; x++) {
-			tiles[y].push_back(3);
-			structures[y].push_back(0);
-		}
-	}
-	tileTypes = tilePalette;
-	nextAction();
-	name = Name;
+	name = mapName;
 }
 
 void Map::loadTiles(vector<Tile> tiles) {
@@ -57,7 +34,7 @@ void Map::loadTiles(vector<Tile> tiles) {
 }
 
 void Map::editorSetTileAt(size_t x, size_t y, size_t value) {
-	if (y < tiles.size() - 1 && x < tiles[y].size() - 1 && tiles[y][x] != value) {
+	if (y < sizey - 1 && x < sizex - 1 && tiles[y][x] != value) {
 		actionStack.top().x.push_back(x);
 		actionStack.top().y.push_back(y);
 		actionStack.top().prevValue.push_back(tiles[y][x]);
@@ -88,9 +65,9 @@ void Map::nextAction() {
 
 void Map::save() {
 	vector<string> lines;
-	for (size_t y = 0; y < tiles.size(); y++) {
+	for (size_t y = 0; y < sizey; y++) {
 		string line = "";
-		for (size_t x = 0; x < tiles[y].size(); x++) {
+		for (size_t x = 0; x < sizex; x++) {
 			line += " " + strh::toString(getValueAt(x, y));
 		}
 		line += " ;";
@@ -118,6 +95,7 @@ void Map::load(string mapName) {
 		vector<Structure*> temp1;
 		tiles.push_back(temp);
 		structures.push_back(temp1);
+		sizey++;
 
 		size_t a = 0, b = 0;
 		size_t c;
@@ -133,10 +111,12 @@ void Map::load(string mapName) {
 			if (nextstring.size() == 0) nextint = 3;
 			else nextint = stoi(nextstring, &sz);
 			tiles[i].push_back(nextint);
-			structures[i].push_back(0);
+			structures[i].push_back(&sempty);
+			sizex++;
 		}
 		i++;
 	}
+	int q = 0;
 }
 
 

@@ -7,6 +7,7 @@
 #include <iterator>
 
 class MapWindow;
+class Map;
 
 using namespace std;
 
@@ -87,6 +88,8 @@ private:
 	vector<vector<bool>> flags;
 	int cIndex;
 	bool deadEnd;
+
+	Map* map;
 
 	int itemp0;
 	double dtemp0;

@@ -7,6 +7,7 @@
 #include "Debugger.h"
 #include "Structure.h"
 #include <memory>
+#include <chrono>
 
 #define sx 10
 #define sy 20
@@ -51,8 +52,7 @@ private:
 class Map {
 public:
 	Map();
-	Map(vector<Tile> textures);
-	Map(vector<Tile> textures, string name);
+	Map(vector<Tile> tilePalette, string mapName, string loadName);
 	void loadTiles(vector<Tile> textures);
 	void editorSetTileAt(size_t x, size_t y, size_t value);
 	
@@ -61,97 +61,109 @@ public:
 	void save();
 	void load(string mapName);
 
+	Structure sempty;
+
 	vector<vector<int>> tiles;
-	vector<vector<Structure*>> structures;
 	std::vector<Tile> tileTypes;
 	string name = "";
 
+	size_t sizex, sizey;
 
 	//Inline functions
 
-	inline Tile* Map::getTileAt(size_t x, size_t y) {
-		if (y < tiles.size() - 1 && x < tiles[y].size() - 1) return &tileTypes[tiles[y][x]];
+	inline Tile* Map::getTileAtSafe(size_t x, size_t y) {
+		if (y < sizey - 1 && x < sizex - 1) return &tileTypes[tiles[y][x]];
 		else return &tileTypes[0];
 
 	}
-	inline int Map::getValueAt(size_t x, size_t y) {
-		if (y < tiles.size() - 1 && x < tiles[y].size() - 1) return tiles[y][x];
+	inline Tile* Map::getTileAt(size_t x, size_t y) {
+		return &tileTypes[tiles[y][x]];
+	}
+	inline int Map::getValueAtSafe(size_t x, size_t y) {
+		if (y < sizey - 1 && x < sizex - 1) return tiles[y][x];
 		else return 1;
 	}
-
-	inline Structure* Map::getStructureAt(size_t x, size_t y) {
-		if (y < structures.size() &&  x < structures[y % structures.size()].size()) {
-			return structures[x][y];
-		} else {
-			return NULL;
-		}
+	inline int Map::getValueAt(size_t x, size_t y) {
+		return tiles[y][x];
 	}
-	inline bool Map::setStructureAt(size_t x, size_t y, Structure* value) {
-		if (y < structures.size() && x < structures[y % structures.size()].size()) structures[x][y] = value;
+
+	inline Structure* Map::getStructureAtSafe(size_t x, size_t y) {
+		if (y < sizey &&  x < sizex) return structures[x][y];
+		else return NULL;
+	}
+	inline Structure* Map::getStructureAt(size_t x, size_t y) {
+		return structures[x][y];
+	}
+	inline bool Map::setStructureAtSafe(size_t x, size_t y, Structure* newStruct) {
+		if (y < sizey && x < sizex) structures[x][y] = newStruct;
 		else return false;
 		return true;
 	}
-	inline void Map::removeStructureAt(size_t x, size_t y) {
-		if (y < structures.size() && x < structures[y % structures.size()].size()) {
-			structures[x][y] = NULL;
+	inline void Map::setStructureAt(size_t x, size_t y, Structure* newStruct) {
+		structures[x][y] = newStruct;
+	}
+	inline void Map::removeStructureAtSafe(size_t x, size_t y) {
+		if (y < sizey && x < sizex) {
+			structures[x][y] = &sempty;
 		}
 	}
+	inline void Map::removeStructureAt(size_t x, size_t y) {
+		structures[x][y] = &sempty;
+	}
 
+	inline double Map::getTravelWeightAtSafe(size_t x, size_t y) {
+		return getTileAtSafe(x, y)->getTravelWeight();
+	}
 	inline double Map::getTravelWeightAt(size_t x, size_t y) {
 		return getTileAt(x, y)->getTravelWeight();
+	}
+	inline double Map::getTravelWeightAtSafe(Vector2ST pos) {
+		return getTileAtSafe(pos.x, pos.y)->getTravelWeight();
 	}
 	inline double Map::getTravelWeightAt(Vector2ST pos) {
 		return getTileAt(pos.x, pos.y)->getTravelWeight();
 	}
-	inline bool Map::getBorderDataAt(Vector2ST from, Vector2ST to, size_t borderIndex) {
-		btemp0 = getTileAt(from.x, from.y)->borderEntrance[borderIndex]
-			&& getTileAt(to.x, to.y)->borderEntrance[(borderIndex + 2) % 4];
-		if ((stemp0 = getStructureAt(from.x, from.y)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex];
-		}
-		if ((stemp0 = getStructureAt(to.x, to.y)) != NULL) {
-			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
-		}
+	inline bool Map::getBorderDataAtSafe(Vector2ST from, Vector2ST to, size_t borderIndex) {
+		getBorderDataAtSafe(from.x, from.y, to.x, to.y, borderIndex);
 
-		return btemp0;
+	}
+	inline bool Map::getBorderDataAtSafe(size_t xfrom, size_t yfrom, size_t xto, size_t yto, size_t borderIndex) {
+		return getTileAtSafe(xfrom, yfrom)->borderEntrance[borderIndex]
+			&& getTileAtSafe(xto, yto)->borderEntrance[borderIndex + 2]
+			&& getStructureAtSafe(xfrom, yfrom)->borderData[borderIndex]
+			&& getStructureAtSafe(xto, yto)->borderData[borderIndex + 2];
+
+	}
+	inline bool Map::getBorderDataAtSafe(Vector2ST from, size_t xto, size_t yto, size_t borderIndex) {
+		getBorderDataAtSafe(from.x, from.y, xto, yto, borderIndex);
 	}
 	inline bool Map::getBorderDataAt(size_t xfrom, size_t yfrom, size_t xto, size_t yto, size_t borderIndex) {
-		btemp0 = getTileAt(xfrom, yfrom)->borderEntrance[borderIndex]
-			&& getTileAt(xto, yto)->borderEntrance[(borderIndex + 2) % 4];
-		if ((stemp0 = getStructureAt(xfrom, yfrom)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex];
-		}
-		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
-			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
-		}
-
-		return btemp0;
+		return getTileAt(xfrom, yfrom)->borderEntrance[borderIndex]
+			&& getTileAt(xto, yto)->borderEntrance[borderIndex + 2]
+			&& getStructureAt(xfrom, yfrom)->borderData[borderIndex]
+			&& getStructureAt(xto, yto)->borderData[borderIndex + 2];
 	}
-	inline bool Map::getBorderDataAt(Vector2ST from, size_t xto, size_t yto, size_t borderIndex) {
-		btemp0 = getTileAt(from.x, from.y)->borderEntrance[borderIndex]
-			&& getTileAt(xto, yto)->borderEntrance[(borderIndex + 2) % 4];
-		if ((stemp0 = getStructureAt(from.x, from.y)) != NULL) {
-			btemp0 &= stemp0->borderData[borderIndex];
-		}
-		if ((stemp0 = getStructureAt(xto, yto)) != NULL) {
-			btemp0 &= stemp0->borderData[(borderIndex + 2) % 4];
-		}
-
-		return btemp0;
+	
+	inline bool Map::isSafeSafe(size_t x, size_t y) {
+		Structure * s = getStructureAtSafe(x, y);
+		bool safe = s->isSafe;
+		return safe;
 	}
 	inline bool Map::isSafe(size_t x, size_t y) {
-		if ((stemp1 = getStructureAt(x, y)) != 0) {
-			return stemp1->isSafe;
-		} else return false;
+		return getStructureAt(x, y)->isSafe;
 	}
+
 
 
 private:
 	stack<Action> actionStack;
+	vector<vector<Structure*>> structures;
 
 
 	bool btemp0, btemp1;
 	Structure *stemp0, *stemp1;
+
+	
 };
 
 Map LoadMap(string mapName);

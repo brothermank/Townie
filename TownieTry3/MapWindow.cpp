@@ -13,18 +13,22 @@ MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer) : Window(wind, 
 	shared_ptr<GTextField> temp1(new GTextField(rend));
 	shared_ptr<GTextField> temp2(new GTextField(rend));
 	shared_ptr<GTextField> temp3(new GTextField(rend));
+	shared_ptr<GTextField> temp4(new GTextField(rend));
 	temp1->pos = Vector2D(0, 80);
 	temp2->pos = Vector2D(0, 160);
 	temp3->pos = Vector2D(0, 240);
+	temp4->pos = Vector2D(0, 320);
 	saveText = temp;
 	heroMoney = temp1;
 	monsterHealth = temp2;
 	heroHealth = temp3;
+	frameRate = temp4;
 
 	guiElements.push_back(saveText);
 	guiElements.push_back(monsterHealth);
 	guiElements.push_back(heroHealth);
 	guiElements.push_back(heroMoney);
+	guiElements.push_back(frameRate);
 }
 MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer, Map m) :Window(wind, renderer) {
 	wpos.x = 0;
@@ -35,18 +39,22 @@ MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer, Map m) :Window(
 	shared_ptr<GTextField> temp1(new GTextField(rend));
 	shared_ptr<GTextField> temp2(new GTextField(rend));
 	shared_ptr<GTextField> temp3(new GTextField(rend));
+	shared_ptr<GTextField> temp4(new GTextField(rend));
 	temp1->pos = Vector2D(0, 80);
 	temp2->pos = Vector2D(0, 160);
 	temp3->pos = Vector2D(0, 240);
+	temp4->pos = Vector2D(0, 320);
 	saveText = temp;
 	heroMoney = temp1;
 	monsterHealth = temp2;
 	heroHealth = temp3;
+	frameRate = temp4;
 
 	guiElements.push_back(saveText);
 	guiElements.push_back(monsterHealth);
 	guiElements.push_back(heroHealth);
 	guiElements.push_back(heroMoney);
+	guiElements.push_back(frameRate);
 }
 
 void MapWindow::DrawMap() {
@@ -70,18 +78,16 @@ void MapWindow::DrawMap() {
 	//Clear screen
 	SDL_RenderClear(rend);
 	Tile * t;
-
-	//Render texture to screen
+	Vector2D scrpos;
+	//Render textures to screen
 	for (int y = yh; y > yl; y--) {
 		for (int x = xl; x < xh; x++) {
 
-			Vector2D scrpos = mapPosToScreenPos(Vector2D(x, y));
+			scrpos = mapPosToScreenPos(Vector2D(x, y));
 
-			if (scrpos.x >= -tilew && scrpos.x <= scrw && scrpos.y >= -tileh && scrpos.y <= scrh) {
-				t = map.getTileAt(x, y);
-				t->texture->render(scrpos, tileh, rend);
-				//SDL_RenderCopy(rend, t->texture.mTexture, NULL, &renderArea);
-			}
+			t = map.getTileAtSafe(x, y);
+			t->texture->render(scrpos, tileh, rend);
+			//SDL_RenderCopy(rend, t->texture.mTexture, NULL, &renderArea);
 		}
 	}
 }
@@ -187,7 +193,7 @@ void MapWindow::removeEntity(Entity * e) {
 }
 
 shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, int x, int y) {
-	if (map.isSafe(x, y)) {
+	if (map.isSafeSafe(x, y)) {
 		return NULL;
 	}
 	shared_ptr<Monster> e = make_shared<Monster>(templ->copyEntity());
@@ -202,7 +208,7 @@ shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, Rectangle 
 	int i = 0;
 	double q = 0;
 	double r = 0;
-	while (map.isSafe(x, y) || entityAt(x, y)) {
+	while (map.isSafeSafe(x, y) || entityAt(x, y)) {
 		q = rand() * 1.0 / RAND_MAX * (area.w - 0.001);
 		r = rand() * 1.0 / RAND_MAX * (area.h - 0.001);
 		x = (int)(area.x + q);
@@ -247,7 +253,7 @@ bool MapWindow::entityAt(int x, int y) {
 }
 
 void MapWindow::update(double dTime) {
-	/*UpdateZones(dTime);*/
+	UpdateZones(dTime);
 	UpdateEntities(dTime);
 	DrawMap();
 	DrawEntities(dTime);

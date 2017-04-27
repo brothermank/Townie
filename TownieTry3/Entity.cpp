@@ -59,9 +59,7 @@ void Entity::FollowPath() {
 		double distance = direction.magnitude();
 		direction.normalize();
 		if (dTime * speed > distance) {
-			//Debugger::print("arrived... Settin pos: " + toString(path.checkpoints[0].pos.x) + "," + toString(path.checkpoints[0].pos.y) + "\n\n\n\n\n\n");
 			pos = path[0].pos;
-			//Debugger::print("Dtime: " + toString(dTime) + " speed:" + toString(speed) + " lengthTravelled: " + toString(direction.magnitude()) + "\n");
 			path.pop();
 		}
 		else {
