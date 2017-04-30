@@ -11,11 +11,10 @@ public:
 	virtual void onExit(Entity e) = 0;
 
 	Rectangle area;
-	MapWindow* world;
+	shared_ptr<MapWindow> world;
 
-	Zone() {}
-	Zone(int x, int y, int w, int h, MapWindow* world) : area(x, y, w, h) {
-		world = world;
+	Zone(int x, int y, int w, int h, shared_ptr<MapWindow> world) : area(x, y, w, h) {
+		this->world = world;
 	}
 
 };

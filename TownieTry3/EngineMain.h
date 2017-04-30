@@ -38,5 +38,6 @@ private:
 	SDL_Surface* gScreenSurface = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	shared_ptr<MapWindow> currentWindow;
+	shared_ptr<Map> map;
 
 };

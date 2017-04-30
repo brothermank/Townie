@@ -61,7 +61,7 @@ public:
 	void save();
 	void load(string mapName);
 
-	Structure sempty;
+	shared_ptr<Structure> sempty;
 
 	vector<vector<int>> tiles;
 	std::vector<Tile> tileTypes;
@@ -87,28 +87,28 @@ public:
 		return tiles[y][x];
 	}
 
-	inline Structure* Map::getStructureAtSafe(size_t x, size_t y) {
+	inline shared_ptr<Structure> Map::getStructureAtSafe(size_t x, size_t y) {
 		if (y < sizey &&  x < sizex) return structures[x][y];
 		else return NULL;
 	}
-	inline Structure* Map::getStructureAt(size_t x, size_t y) {
+	inline shared_ptr<Structure> Map::getStructureAt(size_t x, size_t y) {
 		return structures[x][y];
 	}
-	inline bool Map::setStructureAtSafe(size_t x, size_t y, Structure* newStruct) {
-		if (y < sizey && x < sizex) structures[x][y] = newStruct;
+	inline bool Map::setStructureAtSafe(size_t x, size_t y, Structure newStruct) {
+		if (y < sizey && x < sizex) structures[x][y] = make_shared<Structure>(newStruct);
 		else return false;
 		return true;
 	}
-	inline void Map::setStructureAt(size_t x, size_t y, Structure* newStruct) {
-		structures[x][y] = newStruct;
+	inline void Map::setStructureAt(size_t x, size_t y, Structure newStruct) {
+		structures[x][y] = make_shared<Structure>(newStruct);
 	}
 	inline void Map::removeStructureAtSafe(size_t x, size_t y) {
 		if (y < sizey && x < sizex) {
-			structures[x][y] = &sempty;
+			structures[x][y] = sempty;
 		}
 	}
 	inline void Map::removeStructureAt(size_t x, size_t y) {
-		structures[x][y] = &sempty;
+		structures[x][y] = sempty;
 	}
 
 	inline double Map::getTravelWeightAtSafe(size_t x, size_t y) {
@@ -145,9 +145,7 @@ public:
 	}
 	
 	inline bool Map::isSafeSafe(size_t x, size_t y) {
-		Structure * s = getStructureAtSafe(x, y);
-		bool safe = s->isSafe;
-		return safe;
+		return getStructureAtSafe(x, y)->isSafe;
 	}
 	inline bool Map::isSafe(size_t x, size_t y) {
 		return getStructureAt(x, y)->isSafe;
@@ -157,7 +155,7 @@ public:
 
 private:
 	stack<Action> actionStack;
-	vector<vector<Structure*>> structures;
+	vector<vector<shared_ptr<Structure>>> structures;
 
 
 	bool btemp0, btemp1;

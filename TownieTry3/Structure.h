@@ -1,5 +1,6 @@
 #pragma once
 #include "WObject.h"
+#include <memory>
 
 class Entity;
 
@@ -18,7 +19,7 @@ public:
 	Structure(SDL_Renderer * rend, string textureType, string name, StructT Type = SUndefined, Vector2D position = Vector2D(0, 0), double size = 1, double imgSize = 1, bool* borderData = 0, bool isSafe = false);
 	Structure copy();
 	bool isWithin(Entity* e);
-	void SetPosition(size_t x, size_t y, Map* m);
+	void SetPosition(size_t x, size_t y, shared_ptr<Map> m);
 
 	virtual void render();
 
@@ -28,4 +29,5 @@ public:
 	double size;
 
 	bool isSafe;
+
 };

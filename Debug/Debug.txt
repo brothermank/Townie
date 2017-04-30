@@ -1,0 +1,3 @@
+Created rectangle with pos 0,0  size 10,10
+Rectangle in initialization 0,0 - is within space 10,10 rectangle at 07EA2090
+Rectangle in main loop 0,0 - is within space 10,10 rectangle at 07EA2090

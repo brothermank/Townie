@@ -6,22 +6,24 @@
 #include <string>
 #include "Debugger.h"
 
-Map::Map() : sempty() {
+Map::Map() {
+	sempty = make_shared<Structure>(Structure());
 	for (int y = 0; y < sy; y++) {
 		vector<int> temp;
-		vector<Structure*> temp1;
+		vector<shared_ptr<Structure>> temp1;
 		tiles.push_back(temp);
 		structures.push_back(temp1);
 		for (int x = 0; x < sx; x++) {
 			tiles[y].push_back(0);
-			structures[y].push_back(&sempty);
+			structures[y].push_back(sempty);
 		}
 	}
 	sizex = sx; sizey = sy;
 	name = "Random" + strh::toString(rand());
 	nextAction();
 }
-Map::Map(vector<Tile> tilePalette, string mapName, string loadName) : sempty() {
+Map::Map(vector<Tile> tilePalette, string mapName, string loadName) {
+	sempty = make_shared<Structure>(Structure());
 	load(loadName);
 	sizex = sx; sizey = sy;
 	tileTypes = tilePalette;
@@ -92,7 +94,7 @@ void Map::load(string mapName) {
 	int i = 0;
 	while (getline(input, line)) {
 		vector<int> temp;
-		vector<Structure*> temp1;
+		vector<shared_ptr<Structure>> temp1;
 		tiles.push_back(temp);
 		structures.push_back(temp1);
 		sizey++;
@@ -111,7 +113,7 @@ void Map::load(string mapName) {
 			if (nextstring.size() == 0) nextint = 3;
 			else nextint = stoi(nextstring, &sz);
 			tiles[i].push_back(nextint);
-			structures[i].push_back(&sempty);
+			structures[i].push_back(sempty);
 			sizex++;
 		}
 		i++;

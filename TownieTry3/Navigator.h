@@ -89,10 +89,13 @@ private:
 	int cIndex;
 	bool deadEnd;
 
-	Map* map;
+	shared_ptr<Map> map;
+	size_t nodesSize;
 
-	int itemp0;
+	size_t stTemp0;
 	double dtemp0;
 	Node * current;
+
+	int i1, i2, i3, i4, i5, i6, i7;
 };
 

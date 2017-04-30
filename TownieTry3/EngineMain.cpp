@@ -19,18 +19,21 @@ Uint32 timeLast = 0;
 
 Game::Game() {
 	initGame();
-	shared_ptr<MapWindow> temp(new MapWindow(gWindow, gRenderer));
-	currentWindow = temp;
+	map = make_shared<Map>(Map());
+	currentWindow = make_shared<MapWindow>(MapWindow(gWindow, gRenderer, map));
+
 	loadAllEntities();
 	loadAllStructures();
 	loadAllItems();
 	loadAllTiles();
-	currentWindow = make_shared<MapWindow>(MapWindow(gWindow, gRenderer, Map(tiles, "Placeholder", "Placeholder")));
+	map->load("Placeholder");
+	map->loadTiles(tiles);
+
 	//currentWindow->registerEntity(Hero(entityTemplates[0].copy()));
 
-	MonsterZone mz = MonsterZone(0, 0, 5, 5, currentWindow.get(), 3);
-	mz.addMonsterTemplate(Monster(entityTemplates[1], 10, 3, 1, 0.2));
-	currentWindow->registerZone(make_shared<MonsterZone>(mz));
+	shared_ptr<MonsterZone> mz = make_shared<MonsterZone>(MonsterZone(0, 0, 10, 10, currentWindow, 3));
+	mz->addMonsterTemplate(Monster(entityTemplates[1], 10, 3, 1, 0.2));
+	currentWindow->registerZone(mz);
 
 	//currentWindow->registerEntity(make_shared<Monster>(entityTemplates[1].copyEntity(), 10));
 	currentWindow->registerEntity(make_shared<Hero>(entityTemplates[0].copyEntity(), 10));
@@ -209,7 +212,6 @@ void Game::loadAllTiles() {
 void Game::loadAllEntities() {
 	entityTemplates.push_back(Entity(gRenderer, "Character", "Viking", &*currentWindow, 1, Vector2D(0, 0), 70, Hero_t));
 	entityTemplates.push_back(Entity(gRenderer, "Character", "Tentacle2", &*currentWindow, 1, Vector2D(0, 0), 70, Monster_t));
-
 }
 void Game::loadAllStructures() {
 	bool temp1[4] = { false, false, false, true };

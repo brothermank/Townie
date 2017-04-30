@@ -17,7 +17,7 @@
 class MapWindow : public Window {
 public:
 	MapWindow(SDL_Window * window, SDL_Renderer * renderer);
-	MapWindow(SDL_Window * window, SDL_Renderer * renderer, Map m);
+	MapWindow(SDL_Window * window, SDL_Renderer * renderer, shared_ptr<Map> m);
 	Vector2D wpos;
 	double zoom;
 	void DrawMap();
@@ -27,7 +27,7 @@ public:
 	void UpdateZones(double time);
 	Vector2D screnPosToMapPos(Vector2D pos);
 	Vector2D mapPosToScreenPos(Vector2D pos);
-	Map * getMap();
+	shared_ptr<Map> getMap();
 	void update(double dTime);
 	bool ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown);
 	void ReceiveHotkeyInput(SDL_Event e);
@@ -54,7 +54,7 @@ public:
 	shared_ptr<GTextField> frameRate;
 
 private:
-	Map map;
+	shared_ptr<Map> map;
 	bool heldLeft = false;
 	bool heldRight = false;
 	shared_ptr<GTextField> saveText;

@@ -30,7 +30,7 @@ MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer) : Window(wind, 
 	guiElements.push_back(heroMoney);
 	guiElements.push_back(frameRate);
 }
-MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer, Map m) :Window(wind, renderer) {
+MapWindow::MapWindow(SDL_Window * wind, SDL_Renderer * renderer, shared_ptr<Map> m) : Window(wind, renderer) {
 	wpos.x = 0;
 	wpos.y = 0;
 	zoom = 1;
@@ -85,16 +85,15 @@ void MapWindow::DrawMap() {
 
 			scrpos = mapPosToScreenPos(Vector2D(x, y));
 
-			t = map.getTileAtSafe(x, y);
+			t = map->getTileAtSafe(x, y);
 			t->texture->render(scrpos, tileh, rend);
 			//SDL_RenderCopy(rend, t->texture.mTexture, NULL, &renderArea);
 		}
 	}
 }
 
-
 void MapWindow::saveMap() {
-	map.save();
+	map->save();
 }
 
 Vector2D MapWindow::screnPosToMapPos(Vector2D pos) {
@@ -115,8 +114,8 @@ Vector2D MapWindow::mapPosToScreenPos(Vector2D pos) {
 	//Debugger::print("In calculation, scrx:" + toString(results[0]) + " scry:" + toString(results[1]) + " with input, x:" + toString(x) + " y:" + toString(y) + "\n");
 	return posr;
 }
-Map* MapWindow::getMap() {
-	return &map;
+shared_ptr<Map> MapWindow::getMap() {
+	return map;
 }
 
 void MapWindow::DrawEntities(double dTime) {
@@ -178,7 +177,7 @@ void MapWindow::registerEntity(shared_ptr<Entity> e) {
 }
 void MapWindow::registerStructure(shared_ptr<Structure> e) {
 	structures.push_back(e);
-	e->SetPosition((int)e->pos.x, (int)e->pos.y, &map);
+	e->SetPosition((size_t)e->pos.x, (size_t)e->pos.y, map);
 }
 void MapWindow::registerZone(shared_ptr<Zone> e) {
 	zones.push_back(e);
@@ -193,7 +192,7 @@ void MapWindow::removeEntity(Entity * e) {
 }
 
 shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, int x, int y) {
-	if (map.isSafeSafe(x, y)) {
+	if (map->isSafeSafe(x, y)) {
 		return NULL;
 	}
 	shared_ptr<Monster> e = make_shared<Monster>(templ->copyEntity());
@@ -208,7 +207,7 @@ shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, Rectangle 
 	int i = 0;
 	double q = 0;
 	double r = 0;
-	while (map.isSafeSafe(x, y) || entityAt(x, y)) {
+	while (map->isSafeSafe(x, y) || entityAt(x, y)) {
 		q = rand() * 1.0 / RAND_MAX * (area.w - 0.001);
 		r = rand() * 1.0 / RAND_MAX * (area.h - 0.001);
 		x = (int)(area.x + q);
@@ -284,14 +283,14 @@ bool MapWindow::ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown) {
 			pos = screnPosToMapPos(pos);
 			for (int i = 0; i < paintSize * 2 - 1; i++) {
 				for (int j = 0; j < paintSize * 2 - 1; j++) {
-					map.editorSetTileAt((int)pos.x - paintSize + 1 + i, (int)pos.y - paintSize + 1 + j, paintingKey);
+					map->editorSetTileAt((int)pos.x - paintSize + 1 + i, (int)pos.y - paintSize + 1 + j, paintingKey);
 				}
 			}
 
 		}
 		else if (heldLeft) {
 			heldLeft = false;
-			map.nextAction();
+			map->nextAction();
 		}
 		if (mask & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
 			if (!heldRight) {
@@ -305,7 +304,7 @@ bool MapWindow::ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown) {
 		}
 		else if (heldRight) {
 			heldRight = false;
-			map.nextAction();
+			map->nextAction();
 		}
 	}
 	return guiOverlayed;
