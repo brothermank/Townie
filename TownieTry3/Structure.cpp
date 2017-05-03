@@ -3,7 +3,8 @@
 #include "Entity.h"
 
 
-Structure::Structure(StructT Type, Vector2D position, double size, double imgSize, bool* borderData, bool isSafe) : type(Type), size(size), WObject(position, imgSize), isSafe(isSafe) {
+Structure::Structure(StructT Type, Vector2D position, double size, double imgSize, bool* borderData, bool isSafe, Vector2D midPoint) 
+	: type(Type), size(size), midPoint(midPoint), WObject(position, imgSize), isSafe(isSafe) {
 	for (int i = 0; i < 4; i++) {
 		if (borderData != 0) {
 			this->borderData[i] = borderData[i];
@@ -15,7 +16,8 @@ Structure::Structure(StructT Type, Vector2D position, double size, double imgSiz
 		}
 	}
 }
-Structure::Structure(LTexture text, StructT Type, Vector2D position, double size, double imgSize, bool* borderData, bool isSafe) :type(Type), size(size), isSafe(isSafe), WObject(text, position, imgSize) {
+Structure::Structure(LTexture text, StructT Type, Vector2D position, double size, double imgSize, bool* borderData, 
+	bool isSafe, Vector2D midPoint) :type(Type), size(size), isSafe(isSafe), midPoint(midPoint), WObject(text, position, imgSize) {
 	for (int i = 0; i < 4; i++) {
 		if (borderData != 0) {
 			this->borderData[i] = borderData[i];
@@ -27,7 +29,9 @@ Structure::Structure(LTexture text, StructT Type, Vector2D position, double size
 		}
 	}
 }
-Structure::Structure(SDL_Renderer * rend, string textureType, string name, StructT Type, Vector2D position, double size, double imgSize, bool* borderData, bool isSafe) :type(Type), size(size), isSafe(isSafe), WObject(rend, textureType, name, position, imgSize) {
+Structure::Structure(SDL_Renderer * rend, string textureType, string name, StructT Type, Vector2D position, double size,
+	double imgSize, bool* borderData, bool isSafe, Vector2D midPoint) :type(Type), size(size), isSafe(isSafe), midPoint(midPoint),
+	WObject(rend, textureType, name, position, imgSize) {
 	for (int i = 0; i < 4; i++) {
 		if (borderData != 0) {
 			this->borderData[i] = borderData[i];
@@ -41,7 +45,7 @@ Structure::Structure(SDL_Renderer * rend, string textureType, string name, Struc
 }
 
 Structure Structure::copy() {
-	return Structure(this->texture, this->type, this->pos, this->size, this->imgSize, this->borderData, this->isSafe);
+	return Structure(this->texture, this->type, this->pos, this->size, this->imgSize, this->borderData, this->isSafe, this->midPoint);
 }
 
 void Structure::render() {

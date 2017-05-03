@@ -31,7 +31,7 @@ public:
 	bool isTriggering = false;
 
 	Weapon() : Item(ItemT::Weapon) {}
-	Weapon(Item i, Animation attackAnimation) : a(attackAnimation), Item(i.copyItem()) {
+	Weapon(Item i, Animation attackAnimation, double dmg = 1) : a(attackAnimation), baseDmg(dmg), Item(i.copyItem()) {
 		type = ItemT::Weapon;
 	}
 

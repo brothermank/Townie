@@ -32,8 +32,9 @@ public:
 	virtual void render(MapWindow* world, double dTime = 0);
 	Hero copyHero();
 	void update(double dTime);
-	void TargetNearestMonster(int maxDistance = INFINITY);
+	void TargetNearestMonster(int maxDistance = 9999);
 	void TargetNearestStore();
+	double getDmg();
 
 	double getOutfitValue();
 
@@ -58,4 +59,10 @@ private:
 	int hasStoreT;
 
 	double timer;
+
+	void checkTarget();
+
+protected:
+	void FollowPath();
+
 };

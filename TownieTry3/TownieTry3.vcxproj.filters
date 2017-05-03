@@ -96,6 +96,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Zone.cpp">
+      <Filter>Source Files\Zones</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ResourceLoader.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceNode.h">
+      <Filter>Header Files\Structures H</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

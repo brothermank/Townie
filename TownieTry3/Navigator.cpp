@@ -9,6 +9,7 @@ using namespace std;
 
 Path::Path() {}
 double Path::pathLength() {
+	int i = nodes[nodes.size() - 1].size;
 	return nodes[nodes.size() - 1].size;
 }
 
@@ -21,10 +22,19 @@ Navigator::Navigator(MapWindow * mapWindow) {
 }
 
 
+void resetFlags() {
+	for (int x = 0; x < MapMaxSizeX; x++) {
+		for (int y = 0; y < MapMaxSizeY; y++) {
+			Navigator::flags[y][x] = false;
+			Navigator::referenceNodes[y][x] = Node(x,y,0);
+		}
+	}
+}
 Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
+	resetFlags();
 	//initialization
 	//Define variables
-	i1 = 0; i2 = 0; i3 = 0; i4 = 0; i5 = 0;
+	i1 = 0; i2 = 0; i3 = 0; i4 = 0; i5 = 0; i6 = 0; i7 = 0; i8 = 0; i9 = 0;
 
 	vector<Node*> nodes;//all the frontier nodes with more paths to explore
 	size_t x = (size_t)(startpos.x + 0.5), y = (size_t)(startpos.y + 0.5);
@@ -36,23 +46,12 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 
 	
 	//more variables
-	vector<vector<Node>> referenceNodes; //For storing where the node was reached from
-	vector<vector<bool>> temp;
-	flags = temp;
-	for (size_t y = 0; y < world->getMap()->tiles.size(); y++) {
-		vector<bool> tempb;
-		vector<Node> tempn;
-		flags.push_back(tempb);
-		referenceNodes.push_back(tempn);
-		for (size_t x = 0; x < world->getMap()->tiles[y].size(); x++) {
-			flags[y].push_back(false);
-			referenceNodes[y].push_back(Node(x, y, 0));
-			i1++;
-		}
-	}
 	//If already at goal, ezpz
 	if (x == destinationPos.x && y == destinationPos.y) {
 		nodes.push_back(&referenceNodes[destinationPos.y][destinationPos.x]);
+		Debugger::print("Set0: " + strh::toString(i1) + ",\t" + strh::toString(i2) + ",\t" + strh::toString(i3) + ",\t" +
+			strh::toString(i4) + ",\t" + strh::toString(i5) + ",\t" + strh::toString(i6) + ",\t" +
+			strh::toString(i7) + ",\t" + strh::toString(i8) + ",\t" + strh::toString(i9) + "\n");
 		return Path(nodes);
 	}
 
@@ -72,6 +71,9 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 			vector<Node*> n;
 			n.push_back(&referenceNodes[(int)startpos.y][(int)startpos.x]); //Start pos
 			n.push_back(nodes[i]);
+			Debugger::print("Set1: " + strh::toString(i1) + ",\t" + strh::toString(i2) + ",\t" + strh::toString(i3) + ",\t" +
+				strh::toString(i4) + ",\t" + strh::toString(i5) + ",\t" + strh::toString(i6) + ",\t" +
+				strh::toString(i7) + ",\t" + strh::toString(i8) + ",\t" + strh::toString(i9) + "\n");
 			return Path(n);
 		}
 		i2++;
@@ -79,10 +81,10 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 
 	int counter = 0;
 	
-	while (nodesSize > 0 && counter < 100) { //while there are still more frontiers to explore
+	while (nodesSize > 0 && counter < 10000) { //while there are still more frontiers to explore
 		i3++;
 		current = findShortestNode(nodes); //Select the shortest frontier
-		//Debugger::print("Current node has size: " + toString(current.size) + " and position: " + toString(current.pos.x) + "," + toString(current.pos.y) + " and length " + toString(current.checkpoints.size()) + "\n");
+		//Debugger::print("Current node has size: " + toString(current.size) + " and position: " + toString(current.pos.x) + ",\t" + toString(current.pos.y) + " and length " + toString(current.checkpoints.size()) + "\n");
 		findUnexploredSurroundingPaths(current->pos, &nf); //Find best directions to advance
 
 		for (size_t i = 0; i < 4; i++) {
@@ -100,10 +102,10 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 				//Flag the position as explored
 				flags[refNext->pos.y][refNext->pos.x] = true;
 
-				//Debugger::print("Returned node has size: " + toString(next.size) + " and position: " + toString(next.pos.x) + "," + toString(next.pos.y) + " and length " + toString(next.checkpoints.size()) + "\n");
+				//Debugger::print("Returned node has size: " + toString(next.size) + " and position: " + toString(next.pos.x) + ",\t" + toString(next.pos.y) + " and length " + toString(next.checkpoints.size()) + "\n");
 				//Debugger::print("Checkpoints are: ");
 				//for (int i = 0; i < next.checkpoints.size(); i++) {
-				//	Debugger::print(toString(next.checkpoints[i].pos.x) + "," + toString(next.checkpoints[i].pos.y) + " ");
+				//	Debugger::print(toString(next.checkpoints[i].pos.x) + ",\t" + toString(next.checkpoints[i].pos.y) + " ");
 				//}
 				//Debugger::print("\n"); 
 
@@ -121,6 +123,9 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 					//Make sure he doesnt stray
 					path.insert(path.begin(), Node(x, y, 0));
 					//return the path
+					Debugger::print("Set3: " + strh::toString(i1) + ",\t" + strh::toString(i2) + ",\t" + strh::toString(i3) + ",\t" + 
+											strh::toString(i4) + ",\t" + strh::toString(i5) + ",\t" + strh::toString(i6) + ",\t" + 
+											strh::toString(i7) + ",\t" + strh::toString(i8) + ",\t" + strh::toString(i9) + "\n");
 					return Path(path);
 				}
 			}
@@ -134,6 +139,9 @@ Path Navigator::findPath(Vector2D startpos, Vector2ST destinationPos) {
 	//If there is no path
 	vector<Node> start;
 	start.push_back(Node((size_t)startpos.x, (size_t)startpos.y, 0));
+	Debugger::print("Set2: " + strh::toString(i1) + ",\t" + strh::toString(i2) + ",\t" + strh::toString(i3) + ",\t" +
+		strh::toString(i4) + ",\t" + strh::toString(i5) + ",\t" + strh::toString(i6) + ",\t" +
+		strh::toString(i7) + ",\t" + strh::toString(i8) + ",\t" + strh::toString(i9) + "\n");
 	return Path(start);
 	
 }
@@ -159,7 +167,7 @@ Node* Navigator::findShortestNode(vector<Node*> nodes) {
 
 void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) {
 	//Find the surrounding paths, that are not flagged as explored
-
+	i8++;
 	vector<Node> steps;
 	if (pos.x >= 1u //index x cant be below zero
 		&& !flags[pos.y][pos.x - 1]//Flag must be false
@@ -169,6 +177,7 @@ void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) 
 		nf->nodes[0].pos.y = pos.y;
 		nf->nodes[0].size = map->getTravelWeightAt(pos.x - 1, pos.y);
 		nf->inFrontier[0] = true;
+		i9++;
 	}
 	else nf->inFrontier[0] = false;
 
@@ -180,6 +189,7 @@ void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) 
 		nf->nodes[1].pos.y = pos.y;
 		nf->nodes[1].size = map->getTravelWeightAt(pos.x + 1, pos.y);
 		nf->inFrontier[1] = true; 
+		i9++;
 	}
 	else nf->inFrontier[1] = false;
 
@@ -191,6 +201,7 @@ void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) 
 		nf->nodes[2].pos.y = pos.y - 1;
 		nf->nodes[2].size = map->getTravelWeightAt(pos.x, pos.y - 1);
 		nf->inFrontier[2] = true; 
+		i9++;
 	}
 	else nf->inFrontier[2] = false;
 
@@ -202,10 +213,11 @@ void Navigator::findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf) 
 		nf->nodes[3].pos.y = pos.y + 1;
 		nf->nodes[3].size = map->getTravelWeightAt(pos.x, pos.y + 1);
 		nf->inFrontier[3] = true;
+		i9++;
 	}
 	else nf->inFrontier[3] = false;
 
 	int x = 0;
 
-
 }
+

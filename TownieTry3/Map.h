@@ -27,7 +27,7 @@ public:
 
 	unsigned int sizeX;
 	unsigned int sizeY;
-	bool borderEntrance[4];
+	bool borderEntrance[8];
 	LTexture* texture;
 
 	Tile(LTexture* text, double ntravelWeight = 1, bool *borderEntrance = 0, Structure s = Structure()) {
@@ -38,9 +38,11 @@ public:
 		for (int i = 0; i < 4; i++) {
 			if (borderEntrance != 0) {
 				this->borderEntrance[i] = borderEntrance[i];
+				this->borderEntrance[i +  4] = borderEntrance[i];
 			}
 			else {
 				this->borderEntrance[i] = true;
+				this->borderEntrance[i + 4] = true;
 			}
 		}
 	}
@@ -88,27 +90,27 @@ public:
 	}
 
 	inline shared_ptr<Structure> Map::getStructureAtSafe(size_t x, size_t y) {
-		if (y < sizey &&  x < sizex) return structures[x][y];
+		if (y < sizey &&  x < sizex) return structures[y][x];
 		else return NULL;
 	}
 	inline shared_ptr<Structure> Map::getStructureAt(size_t x, size_t y) {
-		return structures[x][y];
+		return structures[y][x];
 	}
 	inline bool Map::setStructureAtSafe(size_t x, size_t y, Structure newStruct) {
-		if (y < sizey && x < sizex) structures[x][y] = make_shared<Structure>(newStruct);
+		if (y < sizey && x < sizex) structures[y][x] = make_shared<Structure>(newStruct);
 		else return false;
 		return true;
 	}
 	inline void Map::setStructureAt(size_t x, size_t y, Structure newStruct) {
-		structures[x][y] = make_shared<Structure>(newStruct);
+		structures[y][x] = make_shared<Structure>(newStruct);
 	}
 	inline void Map::removeStructureAtSafe(size_t x, size_t y) {
 		if (y < sizey && x < sizex) {
-			structures[x][y] = sempty;
+			structures[y][x] = sempty;
 		}
 	}
 	inline void Map::removeStructureAt(size_t x, size_t y) {
-		structures[x][y] = sempty;
+		structures[y][x] = sempty;
 	}
 
 	inline double Map::getTravelWeightAtSafe(size_t x, size_t y) {
@@ -145,7 +147,9 @@ public:
 	}
 	
 	inline bool Map::isSafeSafe(size_t x, size_t y) {
-		return getStructureAtSafe(x, y)->isSafe;
+		shared_ptr<Structure> s = getStructureAtSafe(x, y);
+		if (s != NULL) return s->isSafe;
+		return false;
 	}
 	inline bool Map::isSafe(size_t x, size_t y) {
 		return getStructureAt(x, y)->isSafe;

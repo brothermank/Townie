@@ -71,12 +71,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>Libraries\SDL2_ttf-2.0.14\include;Libraries\SDL_image\include;Libraries\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>Libraries\SDL2_ttf-2.0.14\lib\x86;Libraries\SDL_image\lib\x86;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>Libraries\SDL2\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -137,6 +140,7 @@
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WObject.cpp" />
+    <ClCompile Include="Zone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debugger.h" />
@@ -152,6 +156,7 @@
     <ClInclude Include="Navigator.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="SpawnZone.h" />
     <ClInclude Include="Store.h" />
     <ClInclude Include="StringHelper.h" />

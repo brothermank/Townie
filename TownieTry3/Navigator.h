@@ -1,4 +1,7 @@
 #pragma once
+#define MapMaxSizeX 40
+#define MapMaxSizeY 40
+
 #include "Vector.h"
 #include <SDL.h>
 #include <SDL_image.h>
@@ -75,6 +78,7 @@ struct NextFrontier {
 	}
 };
 
+
 class Navigator {
 public:
 	Navigator();
@@ -82,10 +86,11 @@ public:
 	Path findPath(Vector2D startpos, Vector2ST destinationPos);
 	MapWindow * world;
 
+	static Node referenceNodes[40][40];
+	static bool flags[40][40];
 private:
 	void findUnexploredSurroundingPaths(Vector2ST pos, NextFrontier* nf);
 	Node* findShortestNode(vector<Node*> nodes);
-	vector<vector<bool>> flags;
 	int cIndex;
 	bool deadEnd;
 
@@ -96,6 +101,17 @@ private:
 	double dtemp0;
 	Node * current;
 
-	int i1, i2, i3, i4, i5, i6, i7;
+	int i1, i2, i3, i4, i5, i6, i7, i8, i9;
+	//i1: Map initializer
+	//i2: Initial node flags
+	//i3: Main loop iterations (frontiers searched)
+	//i4: Frontiers found/nodes explored (if inside of main while loop)
+	//i5: Nodes searched through for shortest nodes
+	//i6: shortest node index reassigns
+	//i7: shortest node searches
+	//i8: Find new nodes calls
+	//i9: Nodes found
+
 };
+
 

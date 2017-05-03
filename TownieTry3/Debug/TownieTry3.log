@@ -1,3 +1,22 @@
-﻿  Navigator.cpp
-  TownieTry3.vcxproj -> C:\Users\Manke\Documents\GitHub\Townie\Debug\TownieTry3.exe
-  TownieTry3.vcxproj -> C:\Users\Manke\Documents\GitHub\Townie\Debug\TownieTry3.pdb (Partial PDB)
+﻿  Hero.cpp
+  EngineMain.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  Zone.cpp
+c:\users\me\documents\github\townie\townietry3\zone.cpp(6): warning C4018: '>=': signed/unsigned mismatch
+c:\users\me\documents\github\townie\townietry3\zone.cpp(7): warning C4018: '>=': signed/unsigned mismatch
+  Weapon.cpp
+  Navigator.cpp
+c:\users\me\documents\github\townie\townietry3\navigator.cpp(12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  MonsterZone.cpp
+  Monster.cpp
+  MapWindow.cpp
+  GUI.cpp
+  Entity.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Structure.cpp
+  Store.cpp
+  TownieTry3.vcxproj -> C:\Users\Me\Documents\GitHub\Townie\Debug\TownieTry3.exe
+  TownieTry3.vcxproj -> C:\Users\Me\Documents\GitHub\Townie\Debug\TownieTry3.pdb (Partial PDB)

@@ -31,14 +31,19 @@ Game::Game() {
 
 	//currentWindow->registerEntity(Hero(entityTemplates[0].copy()));
 
-	shared_ptr<MonsterZone> mz = make_shared<MonsterZone>(MonsterZone(0, 0, 10, 10, currentWindow, 3));
+	shared_ptr<MonsterZone> mz = make_shared<MonsterZone>(MonsterZone(6, 6, 10, 10, currentWindow, 1));
 	mz->addMonsterTemplate(Monster(entityTemplates[1], 10, 3, 1, 0.2));
 	currentWindow->registerZone(mz);
 
 	//currentWindow->registerEntity(make_shared<Monster>(entityTemplates[1].copyEntity(), 10));
-	currentWindow->registerEntity(make_shared<Hero>(entityTemplates[0].copyEntity(), 10));
 	currentWindow->registerStructure(make_shared<Store>(structTemplates[0].copy()));
-	currentWindow->structures[0]->SetPosition(3, 3, currentWindow->getMap());
+	currentWindow->registerStructure(make_shared<Store>(structTemplates[0].copy()));
+	currentWindow->registerStructure(make_shared<Store>(structTemplates[0].copy()));
+	currentWindow->registerStructure(make_shared<Store>(structTemplates[0].copy()));
+	currentWindow->structures[0]->SetPosition(2, 2, currentWindow->getMap());
+	currentWindow->structures[1]->SetPosition(15, 10, currentWindow->getMap());
+	currentWindow->structures[2]->SetPosition(15, 10, currentWindow->getMap());
+	currentWindow->structures[3]->SetPosition(15, 10, currentWindow->getMap());
 
 	vector<Weapon::Event> points;
 	points.push_back(Weapon::Event(false, 0.1, 0, 100));
@@ -46,12 +51,12 @@ Game::Game() {
 	points.push_back(Weapon::Event(false, 0.2, 100, 0));
 
 	Weapon::Animation slash = Weapon::Animation(points);
-	shared_ptr<Weapon> sword = make_shared<Weapon>(Weapon(itemTemplates[0], slash));
+	shared_ptr<Weapon> sword1 = make_shared<Weapon>(Weapon(itemTemplates[0], slash, 5));
 	shared_ptr<Weapon> fists = make_shared<Weapon>(Weapon(itemTemplates[1], slash));
-	dynamic_pointer_cast<Store>(currentWindow->structures[0])->items.push_back(sword);
-	currentWindow->getHeroes()[0]->weapon = fists;
+	currentWindow->spawnHeroes(make_shared<Hero>(entityTemplates[0].copyEntity()), Rectangle(0, 0, currentWindow->getMap()->sizex - 1, currentWindow->getMap()->sizey - 1), sword1, 1);
 
-	currentWindow->getHeroes()[0]->changeMoney(100);
+	dynamic_pointer_cast<Store>(currentWindow->structures[0])->addStock(sword1, 10);
+	dynamic_pointer_cast<Store>(currentWindow->structures[1])->addStock(sword1, 10);
 
 	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[0], 0, Vector2I(1560, 20), Vector2I(150, 75))));
 	currentWindow->guiElements.push_back(shared_ptr<GButtonSelectTile>(new GButtonSelectTile(currentWindow, gRenderer, textures[1], 1, Vector2I(1730, 20), Vector2I(150, 75))));
@@ -127,6 +132,7 @@ void Game::mainLoop() {
 	int frameRateCount = 0;
 
 	bool heldClick = false;
+	Debugger::print("Set: InitVar\tIniFlg\tMainL\tNNode\tFNode\tSNodeR\tSNodeF\tNNodeS\tNNodeF\n");
 
 	while (!quit) {
 		//Handle events on queue

@@ -13,8 +13,6 @@ public:
 	Rectangle area;
 	shared_ptr<MapWindow> world;
 
-	Zone(int x, int y, int w, int h, shared_ptr<MapWindow> world) : area(x, y, w, h) {
-		this->world = world;
-	}
+	Zone(int x, int y, int w, int h, shared_ptr<MapWindow> world);
 
 };

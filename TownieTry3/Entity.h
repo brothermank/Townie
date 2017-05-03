@@ -28,11 +28,10 @@ public:
 	int RecieveAttack(Entity * e);
 	void changeMoney(double amount) { money += amount; }
 	double getMoney() { return money; }
-	double getDmg() { return dmg; }
 	double getHealth() { return health; }
 	void addItem(shared_ptr<Item> i) {}
 	void removeItem(shared_ptr<Item> i) {}
-
+	virtual double getDmg();
 
 	double speed;
 	Path path;
@@ -40,7 +39,7 @@ public:
 
 protected:
 	double money, dmg, health, range = 0.2;
-	void FollowPath();
+	virtual void FollowPath();
 	ActionT action;
 };
 

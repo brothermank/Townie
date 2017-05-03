@@ -88,6 +88,7 @@ void Map::load(string mapName) {
 	vector<vector<int>> temp;
 	tiles = temp;
 	std::string::size_type sz;
+	sizey = 0;
 
 	ifstream input("Saves/Maps/" + mapName + fileending);
 	string line;
@@ -114,11 +115,11 @@ void Map::load(string mapName) {
 			else nextint = stoi(nextstring, &sz);
 			tiles[i].push_back(nextint);
 			structures[i].push_back(sempty);
-			sizex++;
 		}
 		i++;
 	}
-	int q = 0;
+	sizex = tiles[0].size();
+	int qa = 0;
 }
 
 

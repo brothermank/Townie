@@ -1,7 +1,7 @@
 #include "MapWindow.h"
 #include "Debugger.h"
 #include "StringHelper.h"
-
+#include "Timer.h"
 
 void Hero::render(MapWindow* world, double dTime) {
 	Vector2D scrpos = world->mapPosToScreenPos(pos + Vector2D(0, 1));
@@ -102,9 +102,6 @@ double Hero::getOutfitValue() {
 void Hero::update(double dTime) {
 	timer += dTime;
 	isWithinRange = false;
-	if (!hasT) {
-		TargetNearestMonster(2);
-	}
 	if (hasT) {
 		if (distanceTo(target->pos) < range) {
 			isWithinRange = true;
@@ -120,6 +117,9 @@ void Hero::update(double dTime) {
 			}
 		}
 	}
+	else {
+		TargetNearestMonster();
+	}
 	FollowPath();
 }
 
@@ -127,3 +127,32 @@ Hero Hero::copyHero() {
 	Hero nh = Hero(*this, this->health, this->money, this->dmg, this->range);
 	return nh;
 }
+
+double Hero::getDmg() {
+	return weapon->baseDmg;
+}
+
+void Hero::checkTarget() {
+	if (target->getHealth() >= 0) {
+		target == NULL;
+		hasT = false;
+	}
+}
+
+void Hero::FollowPath() {
+	if (path.size() > 0) {
+		Vector2D direction = Vector2D(path[0].pos.x - pos.x, path[0].pos.y - pos.y);
+		double distance = direction.magnitude();
+		direction.normalize();
+		if (dTime * speed > distance) {
+			pos = path[0].pos;
+			path.pop();
+			if (!hasT) {
+				TargetNearestMonster(5);
+			}
+		} else {
+			pos += (direction * dTime * speed);
+		}
+	}
+}
+

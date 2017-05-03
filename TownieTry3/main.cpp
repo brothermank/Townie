@@ -6,6 +6,7 @@
 #include "EngineMain.h"
 #include <time.h>
 #include "Debugger.h"
+#include "Navigator.h"
 
 //Key press surfaces constants
 enum KeyPressSurfaces
@@ -64,9 +65,22 @@ void stopDependencies() {
 	SDL_Quit();
 }
 
+bool Navigator::flags[40][40] = { false };
+Node Navigator::referenceNodes[40][40] = { Node() };
+
+
+void initNavigator() {
+	for (size_t y = 0; y < 40; y++) {
+		for (size_t x = 0; x < 40; x++) {
+			Navigator::referenceNodes[y][x].pos = Vector2ST(x, y);
+		}
+	}
+}
+
 int main(int argc, char ** argv)
 {
 	initDebug();
+	initNavigator();
 	initateDependencies();
 	Game g = Game::Game();
 	int i = 2;
@@ -74,3 +88,5 @@ int main(int argc, char ** argv)
 	stopDependencies();
 	return 0;
 }
+
+

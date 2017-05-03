@@ -39,6 +39,8 @@ public:
 	void removeEntity(Entity * e);
 	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, int x, int y);
 	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, Rectangle area);
+	shared_ptr<Hero> spawnHero(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon);
+	void spawnHeroes(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon, double amount = 1);
 
 	vector<shared_ptr<Hero>> getHeroes();
 	vector<shared_ptr<Monster>> getMonsters();

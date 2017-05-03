@@ -220,6 +220,33 @@ shared_ptr<Monster> MapWindow::spawnMonster(shared_ptr<Entity> templ, Rectangle 
 	return e;
 }
 
+void MapWindow::spawnHeroes(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon, double amount) {
+	for (int i = 0; i < amount; i++) {
+		spawnHero(templ, area, startWeapon);
+	}
+}
+
+shared_ptr<Hero> MapWindow::spawnHero(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon) {
+	shared_ptr<Hero> e = make_shared<Hero>(templ->copyEntity());
+	e->weapon = startWeapon;
+	int x = (int)(area.x + rand() * 1.0 / RAND_MAX * area.w);
+	int y = (int)(area.y + rand() * 1.0 / RAND_MAX * area.h);
+	int i = 0;
+	double q = 0;
+	double r = 0;
+	while (entityAt(x, y)) {
+		q = rand() * 1.0 / RAND_MAX * (area.w - 0.001);
+		r = rand() * 1.0 / RAND_MAX * (area.h - 0.001);
+		x = (int)(area.x + q);
+		y = (int)(area.y + r);
+		if (i > 1000) return NULL;
+		i++;
+	}
+	e->setPos(Vector2D(x, y));
+	registerEntity(e);
+	return e;
+}
+
 vector<shared_ptr<Hero>> MapWindow::getHeroes() {
 	vector<shared_ptr<Hero>> heroes;
 	for (size_t i = 0; i < entities.size(); i++) {

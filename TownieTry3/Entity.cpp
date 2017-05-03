@@ -69,7 +69,7 @@ void Entity::FollowPath() {
 }
 
 int Entity::RecieveAttack(Entity * e) {
-	health -= e->dmg;
+	health -= e->getDmg();
 	if (health <= 0) {//If dead
 					  //remove reference from world
 		n.world->removeEntity(this);
@@ -78,3 +78,8 @@ int Entity::RecieveAttack(Entity * e) {
 	}
 	return 0;
 }
+
+double Entity::getDmg() {
+	return dmg;
+}
+
