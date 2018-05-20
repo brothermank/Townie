@@ -87,6 +87,8 @@ $RECYCLE.BIN/
 .vs/TownieTry3/v14/.suo
 *.db
 *.suo
+*.ipch
+*.tlog
 TownieTry3.VC.db
 
 

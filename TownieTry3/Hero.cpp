@@ -1,10 +1,11 @@
-#include "MapWindow.h"
+#include "Scenario.h"
 #include "Debugger.h"
 #include "StringHelper.h"
 #include "Timer.h"
 
-void Hero::render(MapWindow* world, double dTime) {
-	Vector2D scrpos = world->mapPosToScreenPos(pos + Vector2D(0, 1));
+[[deprecated]] //Now rendering is done via ScenarioView
+void Hero::render(Scenario* world, double dTime) {
+	/*Vector2D scrpos = world->getMap()->mapPosToScreenPos(pos + Vector2D(0, 1));
 	bool isInsideBuilding = false;
 	for (size_t i = 0; i < world->structures.size(); i++) {
 		if (pos.x < world->structures[i]->pos.x + world->structures[i]->size && pos.x > world->structures[i]->pos.x - world->structures[i]->size
@@ -22,7 +23,7 @@ void Hero::render(MapWindow* world, double dTime) {
 			Vector2D weaponAnchor = scrpos + Vector2D(imgSize * scale * 0.38, imgSize * -0.22) * world->zoom;
 			weapon->Render(world, weaponAnchor, world->getRend(), isWithinRange, dTime);
 		}
-	}
+	}*/
 }
 
 void Hero::TargetNearestMonster(int maxDistance) {

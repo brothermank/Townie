@@ -14,55 +14,60 @@
 #include "Structure.h"
 #include "MonsterZone.h"
 
-class MapWindow : public Window {
-public:
-	MapWindow(SDL_Window * window, SDL_Renderer * renderer);
-	MapWindow(SDL_Window * window, SDL_Renderer * renderer, shared_ptr<Map> m);
-	Vector2D wpos;
-	double zoom;
-	void DrawMap();
-	void saveMap();
-	void DrawEntities(double dTime);
-	void UpdateEntities(double dTime);
-	void UpdateZones(double time);
-	Vector2D screnPosToMapPos(Vector2D pos);
-	Vector2D mapPosToScreenPos(Vector2D pos);
-	shared_ptr<Map> getMap();
-	void update(double dTime);
-	bool ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown);
-	void ReceiveHotkeyInput(SDL_Event e);
-	void changePaintSize(bool increment);
 
-	void registerEntity(shared_ptr<Entity> e);
-	void registerStructure(shared_ptr<Structure> e);
-	void registerZone(shared_ptr<Zone> e);
-	void removeEntity(Entity * e);
-	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, int x, int y);
-	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, Rectangle area);
-	shared_ptr<Hero> spawnHero(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon);
-	void spawnHeroes(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon, double amount = 1);
-
-	vector<shared_ptr<Hero>> getHeroes();
-	vector<shared_ptr<Monster>> getMonsters();
-	vector<shared_ptr<Store>> getStores();
-
-	bool entityAt(int x, int y);
-
-	vector<shared_ptr<Entity>> entities; //Should use int/ID based hashmaps for faster removal (instead of searching through entire vector)
-	vector<shared_ptr<Structure>> structures;
-	vector<shared_ptr<Zone>> zones;
-	int paintingKey = 1;
-
-	shared_ptr<GTextField> frameRate;
-
-private:
-	shared_ptr<Map> map;
-	bool heldLeft = false;
-	bool heldRight = false;
-	shared_ptr<GTextField> saveText;
-	shared_ptr<GTextField> heroMoney;
-	shared_ptr<GTextField> monsterHealth;
-	shared_ptr<GTextField> heroHealth;
-
-	int paintSize = 2;
-};
+//DEPRECATED FILE
+//
+//class MapWindow : public Window {
+//public:
+//	MapWindow(SDL_Window * window, SDL_Renderer * renderer);
+//	MapWindow(SDL_Window * window, SDL_Renderer * renderer, shared_ptr<Map> m);
+//	Vector2D wpos;
+//	double zoom;
+//
+//	[[deprecated]]
+//	void DrawEnvironment();
+//	void saveMap();
+//	void DrawEntities(double dTime);
+//	void UpdateEntities(double dTime);
+//	void UpdateZones(double time);
+//	Vector2D screnPosToMapPos(Vector2D pos);
+//	Vector2D mapPosToScreenPos(Vector2D pos);
+//	shared_ptr<Map> getMap();
+//	void update(double dTime);
+//	bool ReceiveClick(Vector2D pos, Uint32 mask, bool buttonDown);
+//	void ReceiveHotkeyInput(SDL_Event e);
+//	void changePaintSize(bool increment);
+//
+//	void registerEntity(shared_ptr<Entity> e);
+//	void registerStructure(shared_ptr<Structure> e);
+//	void registerZone(shared_ptr<Zone> e);
+//	void removeEntity(Entity * e);
+//	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, int x, int y);
+//	shared_ptr<Monster> spawnMonster(shared_ptr<Entity> templ, Rectangle area);
+//	shared_ptr<Hero> spawnHero(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon);
+//	void spawnHeroes(shared_ptr<Entity> templ, Rectangle area, shared_ptr<Weapon> startWeapon, double amount = 1);
+//
+//	vector<shared_ptr<Hero>> getHeroes();
+//	vector<shared_ptr<Monster>> getMonsters();
+//	vector<shared_ptr<Store>> getStores();
+//
+//	bool entityAt(int x, int y);
+//
+//	vector<shared_ptr<Entity>> entities; //Should use int/ID based hashmaps for faster removal (instead of searching through entire vector)
+//	vector<shared_ptr<Structure>> structures;
+//	vector<shared_ptr<Zone>> zones;
+//	int paintingKey = 1;
+//
+//	shared_ptr<GTextField> frameRate;
+//
+//private:
+//	shared_ptr<Map> map;
+//	bool heldLeft = false;
+//	bool heldRight = false;
+//	shared_ptr<GTextField> saveText;
+//	shared_ptr<GTextField> heroMoney;
+//	shared_ptr<GTextField> monsterHealth;
+//	shared_ptr<GTextField> heroHealth;
+//
+//	int paintSize = 2;
+//};

@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Rectangle.h"
 
-class MapWindow;
+class ScenarioView;
 
 class Zone {
 public:
@@ -11,8 +11,8 @@ public:
 	virtual void onExit(Entity e) = 0;
 
 	Rectangle area;
-	shared_ptr<MapWindow> world;
+	shared_ptr<Scenario> world;
 
-	Zone(int x, int y, int w, int h, shared_ptr<MapWindow> world);
+	Zone(int x, int y, int w, int h, shared_ptr<ScenarioView> world);
 
 };

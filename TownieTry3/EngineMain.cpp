@@ -17,10 +17,13 @@
 double dTime;
 Uint32 timeLast = 0;
 
+//Class deprecated
+
 Game::Game() {
+	/*
 	initGame();
 	map = make_shared<Map>(Map());
-	currentWindow = make_shared<MapWindow>(MapWindow(gWindow, gRenderer, map));
+	currentWindow = make_shared<ScenarioView>(ScenarioView(gWindow, gRenderer, map));
 
 	loadAllEntities();
 	loadAllStructures();
@@ -72,7 +75,7 @@ Game::Game() {
 
 	currentWindow->zoom = 0.7;
 	currentWindow->wpos = Vector2D(2, -4);
-
+	*/
 }
 
 void Game::start() {
@@ -118,10 +121,13 @@ void Game::closeGame() {
 
 }
 
+[[deprecated]] //Now located in GameHandler.cpp
 void Game::mainLoop() {
+	/*
 	Debugger::print("Rectangle in main loop " + strh::toString(currentWindow->zones[0]->area.x) + "," + strh::toString(currentWindow->zones[0]->area.y)
 		+ " - is within space " + strh::toString(currentWindow->zones[0]->area.w) + "," + strh::toString(currentWindow->zones[0]->area.h) + " rectangle at " + strh::toString(&(currentWindow->zones[0]->area.x)) + "\n");
 	bool quit = false;
+	
 	SDL_Event e;
 	SDL_StartTextInput();
 
@@ -193,8 +199,10 @@ void Game::mainLoop() {
 	}
 
 	closeGame();
+	*/
 }
 
+[[deprecated]]
 void Game::loadAllTiles() {
 	textures.push_back(LTexture(gRenderer, "Texture", "Black"));
 	textures.push_back(LTexture(gRenderer, "Texture", "Grass1"));
@@ -202,6 +210,7 @@ void Game::loadAllTiles() {
 	textures.push_back(LTexture(gRenderer, "Texture", "Road2"));
 	textures.push_back(LTexture(gRenderer, "Texture", "Road3"));
 
+	/*
 	tiles.push_back(Tile(&textures[0], 100));
 	tiles.push_back(Tile(&textures[1], 4));
 	tiles.push_back(Tile(&textures[2]));
@@ -214,20 +223,26 @@ void Game::loadAllTiles() {
 	bool temp3[4] = { false, false, false, false };
 	bool temp4[4] = { false, false, true, false };
 	tiles.push_back(Tile(&textures[0], 0.5f, temp4));
+	*/
 }
+
+[[deprecated]] //Now located in resource handler
 void Game::loadAllEntities() {
-	entityTemplates.push_back(Entity(gRenderer, "Character", "Viking", &*currentWindow, 1, Vector2D(0, 0), 70, Hero_t));
-	entityTemplates.push_back(Entity(gRenderer, "Character", "Tentacle2", &*currentWindow, 1, Vector2D(0, 0), 70, Monster_t));
+	//entityTemplates.push_back(Entity(gRenderer, "Character", "Viking", &*currentWindow, 1, Vector2D(0, 0), 70, Hero_t));
+	//entityTemplates.push_back(Entity(gRenderer, "Character", "Tentacle2", &*currentWindow, 1, Vector2D(0, 0), 70, Monster_t));
 }
+[[deprecated]] //Now located in resource handler
 void Game::loadAllStructures() {
 	bool temp1[4] = { false, false, false, true };
 	structTemplates.push_back(Structure(gRenderer, "Structure", "HouseNew", Store_t, Vector2D(0, 0), 0.2f, 300, temp1, true));
 }
+[[deprecated]] //Now located in resource handler
 void Game::loadAllItems() {
 	itemTemplates.push_back(Item(gRenderer, "Item", "Sword", Item::Undefined, Vector2D(0.5, 1), 50));
 	itemTemplates.push_back(Item(gRenderer, "Item", "Blank", Item::Undefined, Vector2D(0.5, 1), 50));
 }
 
+[[deprecated]]
 void Game::saveLevel() {
-	currentWindow->saveMap();
+	//currentWindow->saveMap();
 }

@@ -29,7 +29,7 @@ public:
 
 	shared_ptr<Weapon> weapon;
 
-	virtual void render(MapWindow* world, double dTime = 0);
+	virtual void render(Scenario* world, double dTime = 0);
 	Hero copyHero();
 	void update(double dTime);
 	void TargetNearestMonster(int maxDistance = 9999);

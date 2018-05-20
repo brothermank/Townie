@@ -8,7 +8,7 @@
 
 #define EntityHeight 70
 
-class MapWindow;
+class ScenarioView;
 
 enum EntityT { Undefined = 0, Hero_t = 1, Monster_t = 2 };
 enum ActionT { Idle, Attack, EnterBuilding };
@@ -16,14 +16,14 @@ enum ActionT { Idle, Attack, EnterBuilding };
 class Entity : public WObject {
 public:
 	Entity() :speed(1), path(), type(Undefined), WObject(Vector2D(0, 0), EntityHeight) {}
-	Entity(LTexture text, MapWindow * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
-	Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
+	Entity(LTexture text, Scenario * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
+	Entity(SDL_Renderer * rend, string textureType, string name, Scenario * map, double speed = 1, Vector2D pos = Vector2D(0, 0), double imgSize = EntityHeight, EntityT t = Undefined);
 
 	virtual void update(double dTime);
 	Entity copyEntity();
 	EntityT type;
 
-	virtual void render(MapWindow* world, double dTime = 0);
+	virtual void render(ScenarioView* world, double dTime = 0);
 
 	int RecieveAttack(Entity * e);
 	void changeMoney(double amount) { money += amount; }

@@ -1,6 +1,6 @@
 #include "Debugger.h"
 #include "StringHelper.h"
-#include "MapWindow.h"
+#include "Scenario.h"
 #include "Navigator.h"
 #include <time.h>
 #include <chrono>
@@ -17,7 +17,7 @@ double Path::pathLength() {
 
 Navigator::Navigator() {
 }
-Navigator::Navigator(MapWindow * mapWindow) {
+Navigator::Navigator(Scenario * mapWindow) {
 	world = mapWindow;
 }
 

@@ -11,7 +11,7 @@ public:
 
 	int targetPopulation;
 
-	MonsterZone(int x, int y, int w, int h, shared_ptr<MapWindow> world, int targetPopulation = 3) : targetPopulation(targetPopulation), Zone(x, y, w, h, world) {
+	MonsterZone(int x, int y, int w, int h, shared_ptr<ScenarioView> world, int targetPopulation = 3) : targetPopulation(targetPopulation), Zone(x, y, w, h, world) {
 	
 	}
 

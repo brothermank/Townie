@@ -4,7 +4,7 @@
 #include "StringHelper.h"
 #include <memory>
 
-class MapWindow;
+class ScenarioView;
 
 enum GuiT { GUndefined = 0, Button_t = 1, Text_t = 2 };
 
@@ -41,8 +41,8 @@ struct GButton : GuiElement {
 };
 struct GButtonSelectTile : GButton {
 	int tileType;
-	shared_ptr<MapWindow> w;
-	GButtonSelectTile(shared_ptr<MapWindow> W, SDL_Renderer * rend, LTexture Icon, int TileType = 0, Vector2I Pos = Vector2I(0, 0), Vector2I Size = Vector2I(10, 10)) : GButton(rend, Icon, Pos, Size) {
+	shared_ptr<ScenarioView> w;
+	GButtonSelectTile(shared_ptr<ScenarioView> W, SDL_Renderer * rend, LTexture Icon, int TileType = 0, Vector2I Pos = Vector2I(0, 0), Vector2I Size = Vector2I(10, 10)) : GButton(rend, Icon, Pos, Size) {
 		tileType = TileType;
 		w = W;
 	}
@@ -50,8 +50,8 @@ struct GButtonSelectTile : GButton {
 };
 struct GButtonSelectBrushSize : GButton {
 	bool increment;
-	shared_ptr<MapWindow> w;
-	GButtonSelectBrushSize(shared_ptr<MapWindow> W, SDL_Renderer * rend, LTexture Icon, bool Increment = false, Vector2I Pos = Vector2I(0, 0), Vector2I Size = Vector2I(10, 10)) : GButton(rend, Icon, Pos, Size) {
+	shared_ptr<ScenarioView> w;
+	GButtonSelectBrushSize(shared_ptr<ScenarioView> W, SDL_Renderer * rend, LTexture Icon, bool Increment = false, Vector2I Pos = Vector2I(0, 0), Vector2I Size = Vector2I(10, 10)) : GButton(rend, Icon, Pos, Size) {
 		increment = Increment;
 		w = W;
 	}

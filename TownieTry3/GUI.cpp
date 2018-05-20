@@ -1,5 +1,5 @@
 #include "GUI.h"
-#include "MapWindow.h"
+#include "ScenarioView.h"
 
 void GButtonSelectTile::OnClick() {
 	w->paintingKey = tileType % totalTextures;

@@ -9,7 +9,7 @@
 #include <memory>
 #include <iterator>
 
-class MapWindow;
+class Scenario;
 class Map;
 
 using namespace std;
@@ -82,9 +82,9 @@ struct NextFrontier {
 class Navigator {
 public:
 	Navigator();
-	Navigator(MapWindow * mapWindow);
+	Navigator(Scenario * world);
 	Path findPath(Vector2D startpos, Vector2ST destinationPos);
-	MapWindow * world;
+	Scenario * world;
 
 	static Node referenceNodes[40][40];
 	static bool flags[40][40];

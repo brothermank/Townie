@@ -1,16 +1,16 @@
 #include "Entity.h"
-#include "MapWindow.h"
+#include "Scenario.h"
 #include "Timer.h"
 #include "Debugger.h"
 
 
-Entity::Entity(LTexture text, MapWindow * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(text, pos, imgSize) {
+Entity::Entity(LTexture text, Scenario * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(text, pos, imgSize) {
 	n = Navigator(map);
 	this->speed = speed;
 	this->pos = pos;
 	type = t;
 }
-Entity::Entity(SDL_Renderer * rend, string textureType, string name, MapWindow * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(rend, textureType, name, pos, imgSize) {
+Entity::Entity(SDL_Renderer * rend, string textureType, string name, Scenario * map, double speed, Vector2D pos, double imgSize, EntityT t) : WObject(rend, textureType, name, pos, imgSize) {
 	n = Navigator(map);
 	this->speed = speed;
 	this->pos = pos;
@@ -34,7 +34,9 @@ Entity Entity::copyEntity() {
 void Entity::update(double dTime) {
 	FollowPath();
 }
-void Entity::render(MapWindow* world, double dTime) {
+[[deprecated]] //rendering is now done in respective window (i.e. scenarioview)
+void Entity::render(ScenarioView* world, double dTime) {
+	/*
 	Vector2D scrpos = world->mapPosToScreenPos(pos + Vector2D(0, 1));
 	bool isInsideBuilding = false;
 	for (size_t i = 0; i < world->structures.size(); i++) {
@@ -50,6 +52,7 @@ void Entity::render(MapWindow* world, double dTime) {
 		int width = (int)(imgSize * world->zoom * scale);
 		texture.render(scrpos, imgSize * world->zoom, world->getRend(), NULL, NULL, Vector2D(0.5, 1));
 	}
+	*/
 }
 
 void Entity::FollowPath() {

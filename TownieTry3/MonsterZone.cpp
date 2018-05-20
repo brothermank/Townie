@@ -1,5 +1,5 @@
 #include "MonsterZone.h"
-#include "MapWindow.h"
+#include "Scenario.h"
 
 void MonsterZone::tick(double time) {
 	for (size_t i = 0; i < monsters.size(); i++) {

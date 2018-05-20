@@ -8,6 +8,7 @@
 #include "Structure.h"
 #include <memory>
 #include <chrono>
+#include "Tile.h"
 
 #define sx 10
 #define sy 20
@@ -21,41 +22,11 @@ struct Action {
 	vector<int> prevValue;
 };
 
-struct Tile {
-public:
-	double getTravelWeight();
-
-	unsigned int sizeX;
-	unsigned int sizeY;
-	bool borderEntrance[8];
-	LTexture* texture;
-
-	Tile(LTexture* text, double ntravelWeight = 1, bool *borderEntrance = 0, Structure s = Structure()) {
-		texture = text;
-		sizeX = text->mWidth;
-		sizeY = text->mHeight;
-		travelWeight = ntravelWeight;
-		for (int i = 0; i < 4; i++) {
-			if (borderEntrance != 0) {
-				this->borderEntrance[i] = borderEntrance[i];
-				this->borderEntrance[i +  4] = borderEntrance[i];
-			}
-			else {
-				this->borderEntrance[i] = true;
-				this->borderEntrance[i + 4] = true;
-			}
-		}
-	}
-
-private:
-	double travelWeight;
-};
-
 class Map {
 public:
 	Map();
 	Map(vector<Tile> tilePalette, string mapName, string loadName);
-	void loadTiles(vector<Tile> textures);
+	void loadTiles(vector<Tile> tiles);
 	void editorSetTileAt(size_t x, size_t y, size_t value);
 	
 	void undoLastChange();

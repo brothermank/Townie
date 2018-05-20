@@ -23,7 +23,7 @@ public:
 	void loadAllEntities();
 	void loadAllStructures();
 	void loadAllItems();
-	void loadLevel(MapWindow window);
+	void loadLevel(ScenarioView window);
 	void loadLevel(Map m);
 	void loadLevel();
 	void saveLevel();
@@ -37,7 +37,7 @@ private:
 	SDL_Window * gWindow;
 	SDL_Surface* gScreenSurface = NULL;
 	SDL_Renderer* gRenderer = NULL;
-	shared_ptr<MapWindow> currentWindow;
+	shared_ptr<ScenarioView> currentWindow;
 	shared_ptr<Map> map;
 
 };

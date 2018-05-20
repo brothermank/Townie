@@ -1,9 +1,10 @@
 #include "Weapon.h"
 #include <math.h>
-#include "MapWindow.h"
+#include "Scenario.h"
 
-void Weapon::Render(MapWindow* world, Vector2D gAnchor, SDL_Renderer* rend, bool animating, double dTime) {
-	isTriggering = false;
+[[deprecated]]  //Rendering is now done by render location (i.e. ScenarioView, item explorer)
+void Weapon::Render(Scenario* world, Vector2D gAnchor, SDL_Renderer* rend, bool animating, double dTime) {
+	/*isTriggering = false;
 	int width = texture.mWidth;
 	int height = texture.mHeight;
 	double scale = texture.mWidth * 1.0 / texture.mHeight;
@@ -27,9 +28,10 @@ void Weapon::Render(MapWindow* world, Vector2D gAnchor, SDL_Renderer* rend, bool
 		Vector2D anchor = (Vector2D(rotatedAnchor.x, rotatedAnchor.y * scale) + Vector2D(0.5, 0.5));
 
 		texture.render(gAnchor, imgSize * world->zoom, rend, rot, NULL, anchor);
-
+		
 	}
 	else {
 		texture.render(gAnchor, imgSize * world->zoom, rend, 0, NULL, pos);;
 	}
+	*/
 }

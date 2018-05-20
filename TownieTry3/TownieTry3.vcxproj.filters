@@ -37,12 +37,36 @@
     <Filter Include="Source Files\Items">
       <UniqueIdentifier>{a46fdfc6-756b-4be7-8275-0c4bfbc1342f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Dependencies">
+      <UniqueIdentifier>{b95bceeb-bf13-4819-bf83-ec5c41b3eca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dependencies">
+      <UniqueIdentifier>{f2ff42fb-822c-4880-9010-5d15eeab6790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{08bf2f3d-022e-44d4-a358-8d05c18867cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\GUI">
+      <UniqueIdentifier>{de534989-7077-47a9-ab15-5fb5f20ad954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{ad9c1e25-f493-4b7e-b23b-e196acf71c1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine\GUI">
+      <UniqueIdentifier>{c6df1118-0ccd-4694-aa2e-d48cb24c7505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine\World">
+      <UniqueIdentifier>{343a2bab-3a72-4492-b943-1d6c85c688f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\World">
+      <UniqueIdentifier>{f2f4b0b6-7627-472d-a3da-d48c353fec3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine\Neural Network">
+      <UniqueIdentifier>{c8847b9f-1417-4ae7-8e80-03cfdc4cdc75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EngineMain.cpp">
@@ -61,9 +85,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GUI.cpp">
@@ -99,11 +120,38 @@
     <ClCompile Include="Zone.cpp">
       <Filter>Source Files\Zones</Filter>
     </ClCompile>
+    <ClCompile Include="DependencyHandler.cpp">
+      <Filter>Source Files\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHandler.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIEngine.cpp">
+      <Filter>Source Files\Engine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldEngine.cpp">
+      <Filter>Source Files\Engine\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario.cpp">
+      <Filter>Source Files\Engine\World</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenarioView.cpp">
+      <Filter>Source Files\Engine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\Engine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\Engine\World</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceHandler.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceLoader.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ResourceLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EngineMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpawnZone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
@@ -175,6 +220,42 @@
     </ClInclude>
     <ClInclude Include="ResourceNode.h">
       <Filter>Header Files\Structures H</Filter>
+    </ClInclude>
+    <ClInclude Include="DependencyHandler.h">
+      <Filter>Header Files\Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHandler.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIEngine.h">
+      <Filter>Header Files\Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario.h">
+      <Filter>Header Files\Engine\World</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldEngine.h">
+      <Filter>Header Files\Engine\World</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenarioView.h">
+      <Filter>Header Files\Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceHandler.h">
+      <Filter>Header Files\Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceLoader.h">
+      <Filter>Header Files\Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Header Files\Engine\World</Filter>
+    </ClInclude>
+    <ClInclude Include="NNHandler.h">
+      <Filter>Header Files\Engine\Neural Network</Filter>
+    </ClInclude>
+    <ClInclude Include="NNModel.h">
+      <Filter>Header Files\Engine\Neural Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

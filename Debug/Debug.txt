@@ -1,75 +1,143 @@
 Created rectangle with pos 6,6  size 10,10
 Created rectangle with pos 0,0  size 39,39
-Rectangle in initialization 6,6 - is within space 10,10 rectangle at 015B0538
-Rectangle in main loop 6,6 - is within space 10,10 rectangle at 015B0538
+Rectangle in initialization 6,6 - is within space 10,10 rectangle at 0FC6D840
+Rectangle in main loop 6,6 - is within space 10,10 rectangle at 0FC6D840
 Set: InitVar	IniFlg	MainL	NNode	FNode	SNodeR	SNodeF	NNodeS	NNodeF
-Set3: 0,	4,	865,	985,	67198,	951,	865,	866,	989
-Set3: 0,	4,	933,	1053,	75552,	1021,	933,	934,	1057
-Set3: 0,	4,	919,	1038,	74710,	1008,	919,	920,	1042
-Set3: 0,	4,	910,	1027,	75014,	999,	910,	911,	1031
-Set3: 0,	4,	904,	1018,	76063,	993,	904,	905,	1022
-Set3: 0,	4,	902,	1016,	78243,	991,	902,	903,	1020
-Set3: 0,	4,	885,	1003,	77657,	972,	885,	886,	1007
-Set3: 0,	4,	850,	966,	74166,	926,	850,	851,	970
-Set3: 0,	4,	825,	939,	72332,	898,	825,	826,	943
-Set3: 0,	4,	799,	914,	70492,	872,	799,	800,	918
-Set3: 0,	4,	778,	896,	68947,	846,	778,	779,	900
-Set3: 0,	4,	755,	874,	66407,	828,	755,	756,	878
-Set3: 0,	4,	734,	851,	63975,	807,	734,	735,	855
-Set3: 0,	4,	719,	834,	62073,	788,	719,	720,	838
-Set3: 0,	4,	709,	822,	60610,	763,	709,	710,	826
-Set3: 0,	4,	707,	819,	60003,	751,	707,	708,	823
-Set3: 0,	4,	707,	819,	59554,	741,	707,	708,	823
-Set3: 0,	4,	703,	813,	58838,	727,	703,	704,	817
-Set3: 0,	4,	697,	807,	57912,	704,	697,	698,	811
-Set3: 0,	4,	693,	801,	57310,	684,	693,	694,	805
-Set3: 0,	4,	689,	797,	56827,	663,	689,	690,	801
-Set3: 0,	4,	681,	787,	56059,	635,	681,	682,	791
-Set3: 0,	4,	671,	777,	55042,	601,	671,	672,	781
-Set3: 0,	4,	663,	767,	54343,	569,	663,	664,	771
-Set3: 0,	4,	655,	759,	53657,	573,	655,	656,	763
-Set3: 0,	4,	642,	744,	52489,	576,	642,	643,	748
-Set3: 0,	4,	632,	734,	51682,	578,	632,	633,	738
-Set3: 0,	4,	622,	722,	50968,	578,	622,	623,	726
-Set3: 0,	4,	610,	709,	50020,	580,	610,	611,	713
-Set3: 0,	4,	597,	696,	49035,	581,	597,	598,	700
-Set3: 0,	4,	569,	666,	46375,	575,	569,	570,	670
-Set3: 0,	4,	556,	653,	45441,	580,	556,	557,	657
-Set3: 0,	4,	532,	628,	43437,	570,	532,	533,	632
-Set3: 0,	4,	515,	609,	41475,	592,	515,	516,	613
-Set3: 0,	4,	492,	584,	39531,	532,	492,	493,	588
-Set3: 0,	4,	475,	566,	37271,	503,	475,	476,	570
-Set3: 0,	4,	452,	542,	34724,	470,	452,	453,	546
-Set3: 0,	4,	430,	519,	32203,	438,	430,	431,	523
-Set3: 0,	4,	396,	486,	28446,	387,	396,	397,	490
-Set3: 0,	4,	373,	463,	25568,	347,	373,	374,	467
-Set3: 0,	4,	343,	428,	22182,	297,	343,	344,	432
-Set3: 0,	4,	314,	395,	19052,	246,	314,	315,	400
-Set3: 0,	4,	228,	299,	11629,	133,	228,	229,	305
-Set3: 0,	4,	136,	198,	5470,	41,	136,	137,	204
-Set3: 0,	4,	71,	113,	1912,	24,	71,	72,	119
-Set3: 0,	4,	18,	34,	189,	5,	18,	19,	40
-Set3: 0,	4,	5,	9,	29,	0,	5,	6,	15
-Set3: 0,	4,	1,	1,	3,	0,	1,	2,	7
-Set3: 0,	4,	1,	1,	3,	0,	1,	2,	7
+Set3: 0,	4,	177,	247,	7354,	194,	177,	178,	251
+Set3: 0,	4,	126,	173,	4117,	125,	126,	127,	177
+Set3: 0,	4,	99,	140,	2859,	98,	99,	100,	144
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Set3: 0,	4,	169,	243,	7465,	197,	169,	170,	247
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Set3: 0,	4,	96,	146,	2763,	98,	96,	97,	150
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Set3: 0,	4,	66,	98,	1271,	48,	66,	67,	102
+Set3: 0,	4,	47,	65,	699,	8,	47,	48,	69
+Set3: 0,	4,	30,	44,	366,	0,	30,	31,	48
+Set3: 0,	4,	16,	26,	150,	0,	16,	17,	30
+Set3: 0,	4,	6,	12,	38,	0,	6,	7,	16
+Set3: 0,	4,	1,	2,	3,	0,	1,	2,	7
+Set3: 0,	4,	1,	2,	3,	0,	1,	2,	7
 Set1: 0,	1,	0,	0,	0,	0,	0,	1,	4
-Set3: 0,	4,	51,	73,	807,	4,	51,	52,	77
-Set3: 0,	4,	51,	73,	807,	4,	51,	52,	77
-Set3: 0,	4,	55,	75,	875,	0,	55,	56,	79
-Set3: 0,	4,	57,	77,	921,	0,	57,	58,	81
-Set3: 0,	4,	57,	77,	921,	0,	57,	58,	81
-Set3: 0,	4,	2,	6,	8,	0,	2,	3,	10
-Set3: 0,	4,	282,	349,	11939,	44,	282,	283,	353
-Set3: 0,	4,	282,	349,	11939,	44,	282,	283,	353
-Set3: 0,	4,	241,	266,	5220,	22,	241,	242,	270
-Set3: 0,	4,	83,	101,	1585,	16,	83,	84,	105
-Set3: 0,	4,	83,	101,	1585,	16,	83,	84,	105
-Set3: 0,	4,	194,	230,	5340,	98,	194,	195,	234
-Set3: 0,	4,	231,	263,	6704,	137,	231,	232,	267
-Set3: 0,	4,	231,	263,	6704,	137,	231,	232,	267
-Set3: 0,	4,	39,	57,	563,	4,	39,	40,	61
-Set3: 0,	4,	5,	11,	29,	0,	5,	6,	15
-Set3: 0,	4,	5,	11,	29,	0,	5,	6,	15
-Set3: 0,	4,	52,	72,	806,	0,	52,	53,	76
-Set3: 0,	4,	36,	52,	476,	0,	36,	37,	56
-Set3: 0,	4,	36,	52,	476,	0,	36,	37,	56
+Set3: 0,	4,	269,	338,	12239,	59,	269,	270,	342
+Set3: 0,	4,	269,	338,	12239,	59,	269,	270,	342
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Set3: 0,	4,	220,	251,	6444,	49,	220,	221,	255
+Set3: 0,	4,	268,	307,	8214,	62,	268,	269,	311
+Set3: 0,	4,	268,	307,	8214,	62,	268,	269,	311
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
+Clicking window
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Type: text... Text has been clicked: 0
+Click
+Unclick
